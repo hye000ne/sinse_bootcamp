@@ -7,15 +7,16 @@
     <script>
         /* 개발자가 프로그램을 실행하면, 브라우저 내의 js엔진이 위에서부터 순서대로
         아래줄로 내려가며 코드를 순차 수행 */
+        var cnt = 0;
         function test() {
-            console.log("박혜원");
-            
+            cnt++;
+            console.log(cnt + "번 눌렀습니다");
         };
         
     </script>
 </head>
 <body>
     <input type="text" id="box">
-    <button onclick="javascript:test()">눌러바</button>
+    <button onclick="test()">눌러바</button>
 </body>
 </html>
