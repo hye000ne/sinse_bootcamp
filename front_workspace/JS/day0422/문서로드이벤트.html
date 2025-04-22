@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        function init(){
+            let box = document.getElementById("box");
+            box.innerText="박혜원";
+        }
+    </script>
+</head>
+<body onLoad="init()">
+    <div id="box"></div>
+    <button ondblclick="alert('더블클릭')" onmouseover="console.log('올림')" onmouseout="console.log('내림')">저를 클릭하세요.</button>
+
+    <!-- option 사이의 텍스틑 유저가 보게되는 디자인적 텍스트에 불과하며
+    실제 서버에 전송할 데이터는 value 속성에 넣어야함 -->
+    <select onchange="console.log('다른 것으로 바꿈')">
+        <option value="google">google</option>
+        <option value="naver">naver</option>
+        <option value="daum">daum</option>
+    </select>
+    <br>
+
+    <!-- 주의)오해없기!!
+    onchange이벤트 핸들러는 기존의 값이 바뀌는 상황을 잡아내는 
+    이벤트 핸들러이기 때문에 꼭 slect 박스에서만 사용할 수 있는게 아님 -->
+    <input type="text" onchange="console.log('다른 것으로 바꿈')">
+</body>
+</html>
