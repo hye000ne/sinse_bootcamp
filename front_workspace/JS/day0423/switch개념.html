@@ -1,0 +1,24 @@
+<script>
+    let bd = prompt("혈액형을 입력하세요.").toUpperCase();
+
+    switch(bd){
+        /* break는 else if문에서의 else 역할 즉 조건에 해당하지 않는 이외의 경우 
+            switch문이 elseif문을 완전히 대체할 순 없다 왜? case에 올 수 있는 코드는 
+            오직 문자, 숫자, 논리값 같은 상수만 올 수 있음
+        */
+        case "A" : 
+            document.write("세심하다.");
+            break;
+        case "B" :
+            document.write("고집이 세다.");
+            break;
+        case "O" :
+            document.write("오지랖쟁이.");
+            break;
+        case "AB" :
+            document.write("결정장애다.");
+            break;
+        /* case에 지정된 조건 외의 모든 경우 통틀어서 제일 마지막 단독 else를 의미 */
+        default : document.write("입력한 혈액형이 지원하지 않습니다.");
+    }
+</script>

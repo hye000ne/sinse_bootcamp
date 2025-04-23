@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        let fruit = prompt("과일을 입력하세요.");
+        let content;
+        let img;
+
+        function init() {
+            content = document.getElementById("content");
+            img = document.createElement("img");
+            content.appendChild(img);
+
+            let str;
+            if(fruit == "사과") str='apple';
+            else if(fruit == "바나나") str='banana';
+            else if(fruit == "포도") str='grape';
+            else if(fruit == "메론") str='melon';
+            else if(fruit == "오렌지") str='orange';
+
+            /* switch(fruit){
+                case "사과" : str='apple'; break;
+                case "바나나" : str='banana'; break;
+                case "포도" : str='grape'; break;
+                case "메론" : str='melon'; break;
+                case "오렌지" : str='orange'; break;
+            } */
+
+            img.src="../../images/fruits/"+str+".png";
+        }
+    </script>
+</head>
+<body onload="init()">
+    <div id="content"></div>
+</body>
+</html>
