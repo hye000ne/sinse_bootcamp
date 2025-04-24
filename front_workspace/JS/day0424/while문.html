@@ -1,0 +1,27 @@
+<script>
+    /* for문이나 while문이나 소괄호 안이 true인 경우
+        코드를 수행하는 원칙은 동일 
+        for, while문을 통해 컴퓨터에게 횟수의 개념을 전달하려면
+        1) 변수를 기억시켜야 함 (초기화, 초기값 설정)
+        2) n보다 작은가(조건)? 참이면 수행
+        3) 기억했던 변수를 증감처리
+    */
+    let i = 1;      // 전역변수
+    while(i <= 3) {   
+        console.log("AA");
+        i++;
+    }
+
+    // for문이 횟수에 관해서는 좀 더 유리
+    for(let a = 1; a <= 3; a++) {
+        console.log("BB");
+    }
+
+    // do ... while문 : 처음 1번은 꼭 실행되는 반복문
+    let b = 0;
+    do {
+        console.log("CC");
+        b++;
+    }while(b < 5)
+
+</script>
