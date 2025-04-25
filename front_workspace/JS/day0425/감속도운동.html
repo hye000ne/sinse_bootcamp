@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        let div;
+        let a = 0.1; // 비율계수(기울기) : 숫자가 높을수록 투박함 (가장 이상적인 움직임 수치 0.1)
+        let tagetX = 800; //도달할 목표지점
+        //물체 움직임 함수
+        function move() {
+            /* 
+            내 위치 = 현재 내 위치 + a*(목표 위치 - 현재 내위치)(=남은 거리)
+            => x = x + a(target - x) 
+            */
+            div.style.left = parseInt(div.style.left)+a*(800-parseInt(div.style.left))+"px";
+            setTimeout("move()",100);
+        }
+
+        //물체 생성용 함수
+        function createRect() {
+            div = document.createElement("div");
+            div.style.backgroundColor = "red";
+            div.style.width = 50+"px";
+            div.style.height = 50+"px";
+            div.style.position="absolute";
+            div.style.left=0+"px";
+            div.style.top=100+"px";
+
+            document.body.appendChild(div);
+        }
+
+        addEventListener("load",function(){
+            createRect(); 
+
+            move();
+            
+        });
+    </script>
+</head>
+<body>
+    
+</body>
+</html>
