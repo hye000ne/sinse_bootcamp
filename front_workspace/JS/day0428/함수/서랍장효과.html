@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            margin: 0px 0px;
+        }
+
+        #rect {
+            height: 150px;
+            background-color: red;
+            position: relative;
+            left:-5px;
+            border-radius: 5px;
+        }
+    </style>
+    <script>
+        let rect;
+        let flag = false;
+        let a = 0.1;
+        let targetW = 350;
+        function init(){
+            rect = document.getElementById("rect");
+            rect.style.width = 30+"px";
+        }
+
+        function setLength(){
+            /* 감속도 공식은 물리적 크기, 위치 등 붙일 수 있는 분야는 모두 적용 가능 */
+            /* 공식 : 나의 너비 =  현 너비 + (비율계수 * 목표너비와의 차) */
+            rect.style.width = parseFloat(rect.style.width) + ((targetW-parseFloat(rect.style.width))*a) + "px";
+        }
+
+        function gameLoop(){
+            setLength();
+        }
+        
+        window.addEventListener("load",()=>{
+            init();
+            //이시점은 rect를 얻어온 이후 시점이므로
+            rect.addEventListener("mouseover",()=>{
+                targetW = 350;
+            });
+
+            rect.addEventListener("mouseout",()=>{
+                targetW = 35;
+            });
+
+            setInterval(gameLoop,10);
+        });
+
+    </script>
+</head>
+<body>
+    <div id="rect"></div>
+</body>
+</html>

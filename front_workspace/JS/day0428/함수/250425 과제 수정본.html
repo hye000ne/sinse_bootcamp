@@ -35,11 +35,18 @@
 
         function move(){
             /* wall에 부딪혔는지 판단 */
+            //논리값을 이용해서 방향을 전환하는 코드가 아주 아주 훌륭합니다 ^^
+            //이 코드를 조금 줄여본다면, if문에서 or조건을 넣어주고, isEnd 는 논리값 이므로, 뒤집을 수 있는 기능을 이용해볼까요?
+            //그리고, 벽과 마주치는 증가값이 홀수일 경우엔 700이나, 0과 일치하지 않는 상황도 발생할 수 있으니, 값을 범위로 잡아보면 어떨까요?
+            /*
             if(x==700) isEnd =true;
             else if(x==0) isEnd = false;
+            */
+           x += (isEnd)? -10:10;
+           box.style.left = x+"px";
+           
+           if(x<=0 || x>=700) isEnd=!isEnd;
 
-            x += (isEnd)? -10:10;
-            box.style.left = x+"px";
         }
 
         addEventListener("load",function(){
