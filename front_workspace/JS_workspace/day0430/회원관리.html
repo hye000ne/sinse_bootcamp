@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #wrapper{
+            margin: auto;
+            width: 1000px;
+            height: 600px;
+            background-color: blanchedalmond;
+            position: relative;
+        }
+
+        #inputForm{
+            width: 200px;
+            height: 100%;
+            background-color: rgb(152, 181, 236);
+            float: left;
+            text-align: center;
+        }
+
+        #section {
+            width: 600px;
+            height: 100%;
+            float: left;
+        }
+
+        #header{
+            width: 600px;
+            height: 100px;
+            background-color: rgb(211, 223, 243);
+            float: left;
+        }
+
+        #content{
+            width: 600px;
+            height: 500px;
+            background-color: rgb(183, 200, 231);
+            float: left;
+        }
+
+        #aside{
+            width: 200px;
+            height: 100%;
+            background-color: rgb(152, 181, 236);
+            float: left;
+            text-align: center;
+        }
+
+        form input {
+            width: 175px;
+            height: 35px;
+            margin: 10px;
+            border: 1px solid #cccccc;
+            border-radius: 3px;
+
+            font-size: 15px;
+        }
+
+        table {
+            width: 100%;
+            text-align: center;
+            border-collapse: collapse;
+        }
+
+        table tbody tr:hover {
+            background-color: yellow;
+        }
+    </style>
+    <script>
+        let inputForm;
+        let header;
+        let content; //회원 목록이 출력될 영역
+        let aside;
+
+        let memberArr = []; //회원 목록 배열
+        let memberArrNo = 1; //회원 목록 번호
+        let selIdx;
+
+
+        // 테이블에서 tr단위 회원 클릭 시 오른쪽 aside form value
+        function getDetail(i){
+            selIdx = i;
+            detailForm.empno.value=memberArr[i][1];
+            detailForm.ename.value=memberArr[i][2];
+            detailForm.sal.value=memberArr[i][3];
+            detailForm.comm.value=memberArr[i][4];
+
+            detailForm.empno.disabled = false;
+            detailForm.ename.disabled = false;
+            detailForm.sal.disabled = false;
+            detailForm.comm.disabled = false;
+        }
+
+        function printTable(){
+            let str = "";
+            str =  "<table border='1px'>";
+            str +=  "    <thead>";
+            str += "        <tr>";
+            str += "            <td>No</td>";
+            str += "            <td>EMPNO</td>";
+            str += "            <td>ENAME</td>";
+            str += "            <td>SAL</td>";
+            str += "            <td>COMM</td>";
+            str += "        </tr>";
+            str += "    </thead>";
+            str += "    <tbody>";
+            for(let i=0;i<memberArr.length;i++){
+            // str += "        <tr onmouseover='this.style.backgroundColor=\"yellow\"' onmouseleave='this.style.backgroundColor=\"\";'>";
+            str += "        <tr onClick=\"getDetail("+i+")\">";
+                for(let j=0;j<memberArr[i].length;j++){
+            str += "            <td>"+memberArr[i][j]+"</td>";
+                }
+            str += "        </tr>";
+            }
+            str += "        <tr>"
+            str += "            <td colspan='5'>사원수 "+memberArr.length+"명 </td>"
+            str += "        </tr>"
+            str += "    </tbody>";
+            str += "</table>";
+
+            content.innerHTML = str; 
+        }
+
+        //메모리 상의 DB에 사원 등록
+        function regist() {
+            let member = [];
+            member.push(memberArrNo++);
+            member.push(form.empno.value);
+            member.push(form.ename.value);
+            member.push(form.sal.value);
+            member.push(form.comm.value);
+
+            memberArr.push(member);
+
+            form.reset();
+            printTable();
+        }
+        
+        // 사원 수정
+        function updMember(){
+            memberArr[selIdx][1] = detailForm.empno.value;
+            memberArr[selIdx][2] = detailForm.ename.value;
+            memberArr[selIdx][3] = detailForm.sal.value;
+            memberArr[selIdx][4] = detailForm.comm.value;
+                
+            alert("수정됐습니다.");
+            detailForm.reset();
+            printTable();
+            selIdx = undefined;
+
+            detailForm.empno.disabled = true;
+            detailForm.ename.disabled = true;
+            detailForm.sal.disabled = true;
+            detailForm.comm.disabled = true;
+        }
+        
+        // 사원 삭제
+        function delMember(){
+            memberArr.splice(selIdx,1);
+            detailForm.reset();
+            printTable();
+            selIdx = undefined;
+
+            detailForm.empno.disabled = true;
+            detailForm.ename.disabled = true;
+            detailForm.sal.disabled = true;
+            detailForm.comm.disabled = true;
+        }
+
+        function init() {
+            inputForm = document.querySelector("#inputForm");
+            header = document.querySelector("#header");
+            content = document.querySelector("#content");
+            aside = document.querySelector("#aside");
+        }
+
+        //aside 폼에 데이터 유무 확인
+        function chkForm(){
+            if(detailForm.empno.value=="" || detailForm.ename.value=="" || detailForm.sal.value=="" || detailForm.comm.value==""){
+                return false;
+            } else { 
+                return true;
+            }
+        }
+
+        addEventListener("load",()=>{
+            init();
+            printTable();
+
+            form.empno.focus(); //문서 로드 시 좌측 입력칸에 커서 올려놓기
+
+            //등록 버튼 이벤트
+            let registBtn = document.querySelector("#inputForm input[type='button']");
+            registBtn.addEventListener("click",()=>{
+                regist();
+            });
+
+            //수정 버튼 이벤트
+            let updBtn = document.querySelector("#updBtn");
+            updBtn.addEventListener("click",()=>{
+                if(chkForm()) {
+                    if(confirm("정말 수정하시겠습니까?")) {
+                        if(selIdx == undefined) alert("선택된 회원이 없습니다. 선택해주세요.");
+                        else updMember();
+                    }
+                } else {
+                    alert("데이터가 입력되지 않았습니다.");
+                } 
+            });
+
+            //삭제 버튼 이벤트
+            let delBtn = document.querySelector("#delBtn");
+            delBtn.addEventListener("click",()=>{
+                if(chkForm()) {
+                    if(confirm("정말 삭제하시겠습니까?")) {
+                        if(selIdx == undefined) alert("선택된 회원이 없습니다. 선택해주세요.");
+                        else delMember();
+                    }
+                } else {
+                    alert("데이터가 입력되지 않았습니다.");
+                } 
+            });
+        });
+    </script>
+</head>
+<body>
+    <div id="wrapper">
+        <div id="inputForm">
+            <!-- form : 제출 양식을 작성하기 위한 태그 / 전송 범위 설정 -->
+            <form name="form">
+                <input type="text" id="empno" name="empno" placeholder="사원번호를 입력하세요.">
+                <input type="text" id="ename" name="ename" placeholder="사원명을 입력하세요.">
+                <input type="text" id="sal" name="sal" placeholder="급여를 입력하세요.">
+                <input type="text" id="comm" name="comm" placeholder="커미션을 입력하세요.">
+
+                <input type="button" value="사원 등록">
+            </form>
+        </div>
+        <div id="section">
+            <div id="header"></div>
+            <div id="content"></div>
+        </div>
+        <div id="aside">
+            <form name="detailForm">
+                <input type="text" name="empno" disabled>
+                <input type="text" name="ename" disabled>
+                <input type="text" name="sal" disabled>
+                <input type="text" name="comm" disabled>
+
+                <input type="button" id="updBtn" name="updBtn" value="사원 수정">
+                <input type="button" id="delBtn" name="delBtn" value="사원 삭제">
+            </form>
+
+        </div>
+    </div>
+</body>
+</html>

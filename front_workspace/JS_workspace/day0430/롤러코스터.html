@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {margin: 0;}
+
+        #wrapper {
+            width: 100%; 
+            height: 800px;
+        }
+
+        #content {
+            width: 90%;
+            height: 100%;
+        
+            background-image: url(../../images/rollerCoaster.jpg);
+            background-size: 100% 800px;
+            float: left;
+
+            position: relative;
+        }
+        
+        #aside {
+            width: 10%;
+            height: 100%;
+            background-color: rgb(153, 209, 231);
+            float: left;
+            overflow: auto;
+        }
+    </style>
+    <script>
+        let content;
+        let aside;
+        let hero;
+        let posArr = [];
+        let idx = 0;
+        let flag = false;
+
+        function createHero() {
+            hero = document.createElement("img");
+            
+            hero.src = "../../images/cute.png";
+            hero.style.width = 50+"px";
+            hero.style.position = "absolute";
+            hero.style.top = 100 + "px";
+            hero.style.left = 100 + "px";
+
+            content.appendChild(hero);
+        }
+
+        function createDot(x, y){
+            let span = document.createElement("span");
+            span.style.backgroundColor="red";
+            span.style.width=10+"px";
+            span.style.height=10+"px";
+
+            span.style.borderRadius="50%";
+            span.style.display="inline-block";
+            span.style.position = "absolute";
+            span.style.left = (x-5)+"px";
+            span.style.top = (y-5)+"px";
+            content.appendChild(span);
+        }
+
+        function pushDot(x, y) {
+            let pos = [x,y];
+            posArr.push(pos);
+        }
+
+        function printPos(x, y){
+            aside.innerHTML += `x=${x}, y=${y}<br>`;
+        }
+
+        function move(){
+            if(flag){
+                if(posArr.length <= idx) idx = 0;
+
+                hero.style.left = (posArr[idx][0]-25)+"px";
+                hero.style.top = (posArr[idx][1]-25)+"px";
+                idx++;
+            }
+
+        }
+
+        function init() {
+            content = document.querySelector("#content");
+            aside = document.querySelector("#aside");
+            
+            createHero();
+            
+            // content에 click 이벤트 연결
+            content.addEventListener("click",()=>{
+                let x = event.clientX;
+                let y = event.clientY;
+
+                createDot(x, y);
+                pushDot(x, y)
+                printPos(x, y);
+            });
+        }
+
+        addEventListener("load",()=>{
+            init();
+
+            document.querySelector("button").addEventListener("click",()=>{
+                flag = true;
+                setInterval(move, 100);
+            });
+        })
+    </script>
+</head>
+<body>
+    <div id="wrapper">
+        <div id="content"></div>
+        <div id="aside"></div>
+        <button>출발!</button>
+    </div>
+</body>
+</html>
