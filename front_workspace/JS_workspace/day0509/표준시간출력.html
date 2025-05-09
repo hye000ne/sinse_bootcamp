@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <script src="../../lib/common.js"></script>
+        <style>
+            #hour,
+            #min,
+            #sec {
+                font-size: 80px;
+                color: red;
+                background-color: azure;
+                width: 120px;
+                height: 120px;
+                border: 2px solid black;
+                border-radius: 20%;
+                display: inline-block;
+                text-align: center;
+                line-height: 100px;
+                margin: 10px;
+            }
+        </style>
+        <script>
+            function showTime() {
+                let date = new Date();
+                document.getElementById("hour").innerText = zeroString(date.getHours());
+                document.getElementById("min").innerText = zeroString(date.getMinutes());
+                document.getElementById("sec").innerText = zeroString(date.getSeconds());
+            }
+
+            addEventListener("load", () => {
+                setInterval(showTime, 1000);
+            });
+        </script>
+    </head>
+    <body>
+        <div id="hour"></div>
+        <div id="min"></div>
+        <div id="sec"></div>
+    </body>
+</html>

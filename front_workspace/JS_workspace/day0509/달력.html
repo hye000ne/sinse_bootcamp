@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <script src="./js/Cell.js"></script>
+        <script src="../../lib/common.js"></script>
+        <style>
+            #wrapper {
+                margin: auto;
+                background-color: yellow;
+            }
+
+            #header {
+                height: 50px;
+                background-color: rgb(187, 247, 247);
+                text-align: center;
+                line-height: 50%;
+            }
+
+            #header h2 {
+                display: inline-block;
+            }
+
+            #header a {
+                text-decoration: none;
+                margin: 0px 50px;
+            }
+
+            #days {
+                background-color: #e4e3e3;
+                text-align: center;
+                line-height: 30px;
+            }
+
+            #section {
+                background-color: beige;
+            }
+        </style>
+        <script>
+            let cellW = 100;
+            let cellH = 100;
+            let cellB = 1;
+
+            let currentYear;
+            let currentMonth;
+
+            let cellArray = [];
+
+            function createCell() {
+                // wrapper width 동적
+                document.getElementById("wrapper").style.width = cellW * 7 + cellB * 14 + "px";
+                // 요일 영역 추가
+                for (let i = 0; i < 7; i++) {
+                    new Cell(document.getElementById("days"), cellW, 40, "e4e3e3", cellB, "black", convertDay(i, "eng"));
+                }
+
+                for (let i = 0; i < 6; i++) {
+                    for (let j = 0; j < 7; j++) {
+                        cellArray.push(new Cell(document.getElementById("section"), cellW, cellH, "#ffff", cellB, "black", " "));
+                    }
+                }
+            }
+
+            function clearDate() {
+                let idx = 0;
+                for (let i = 0; i < 6; i++) {
+                    for (let j = 0; j < 7; j++) {
+                        cellArray[idx++].div.innerText = "";
+                    }
+                }
+            }
+
+            // 기존 셀에 출력된 날짜는 지우고, 새로운 날짜 출력
+            function printDate(currentYear, currentMonth) {
+                let idx = 0;
+                let n = 0;
+                for (let i = 0; i < 6; i++) {
+                    for (let j = 0; j < 7; j++) {
+                        let cell = cellArray[idx];
+
+                        if (idx >= getStartDay(currentYear, currentMonth) && idx <= getLastDate(currentYear, currentMonth + 1)) {
+                            console.log(idx + " " + getLastDate(currentYear, currentMonth + 1));
+                            cell.div.innerText = ++n;
+                        }
+                        idx++;
+                    }
+                }
+            }
+
+            // 현재 날짜 얻어오기
+            function getCurrentDate() {
+                let d = new Date();
+                currentYear = d.getFullYear();
+                currentMonth = d.getMonth();
+            }
+
+            // 다음/이전 버튼 누를때마다 호출
+            function printTitle(yy, mm) {
+                let d = new Date(yy, mm);
+                currentYear = d.getFullYear();
+                currentMonth = d.getMonth();
+
+                document.getElementById("title").innerText = `${currentYear}년 ${currentMonth + 1}월`;
+            }
+
+            addEventListener("load", () => {
+                getCurrentDate();
+                createCell();
+
+                printTitle(currentYear, currentMonth);
+                printDate(currentYear, currentMonth);
+                /* 이전 버튼 클릭 이벤트 */
+                let bt_prev = document.querySelector("#header :nth-child(1)");
+                bt_prev.addEventListener("click", () => {
+                    printTitle(currentYear, --currentMonth);
+                    clearDate();
+                    printDate(currentYear, currentMonth);
+                });
+                /* 다음 버튼 클릭 이벤트 */
+                let bt_next = document.querySelector("#header :nth-child(3)");
+                bt_next.addEventListener("click", () => {
+                    printTitle(currentYear, ++currentMonth);
+                    clearDate();
+                    printDate(currentYear, currentMonth);
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div id="wrapper">
+            <div id="header">
+                <a href="#">◀</a>
+                <h2 id="title"></h2>
+                <a href="#">▶</a>
+            </div>
+            <div id="days"></div>
+            <div id="section"></div>
+        </div>
+    </body>
+</html>
