@@ -4,124 +4,144 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Document</title>
-        <script src="./js/Cell.js"></script>
-        <script src="../../lib/common.js"></script>
         <style>
             #wrapper {
-                margin: auto;
                 background-color: yellow;
+                margin: auto;
             }
-
             #header {
                 height: 50px;
-                background-color: rgb(187, 247, 247);
+                background-color: aqua;
                 text-align: center;
-                line-height: 50%;
+                line-height: 50px;
             }
-
+            #days {
+                background-color: blueviolet;
+            }
             #header h2 {
                 display: inline-block;
+                margin: 0px;
             }
-
             #header a {
                 text-decoration: none;
                 margin: 0px 50px;
+                /*2개로 명시하면 첫번째 요소 top bottom, 두번째 요소 left,right*/
             }
-
-            #days {
-                background-color: #e4e3e3;
-                text-align: center;
-                line-height: 30px;
-            }
-
             #section {
                 background-color: beige;
             }
         </style>
+        <script src="../../lib/common.js"></script>
+        <script src="./js/Cell.js"></script>
         <script>
-            let cellW = 100;
-            let cellH = 100;
-            let cellB = 1;
-
-            let currentYear;
-            let currentMonth;
-
-            let cellArray = [];
+            let cellWidth = 100; //각 셀의 너비
+            let cellHeight = 100; //각 셀의 높이
+            let border = 1; //셀의 보더 두께
+            let currentYear; //유저가 현재 보게될 연도, 로드시에도 할당, 다음,이전 버튼누를때 할당
+            let currentMonth; //유저가 현재 보게될 월
+            let cellArray = []; //셀 생성 후, 제어하려면 이름이 필요하기 때문에 변수가
+            //필요함..하지만 변수명을 일일이 다르게 주면 규칙이 없으므로 배열로 가자
 
             function createCell() {
-                // wrapper width 동적
-                document.getElementById("wrapper").style.width = cellW * 7 + cellB * 14 + "px";
-                // 요일 영역 추가
+                //위의 크기 정보로, wrapper 의 크기를 동적으로 계산할 수 있다.
+                let wrapper = document.getElementById("wrapper");
+                wrapper.style.width = (cellWidth + border * 2) * 7 + "px"; //너비
+                //wrapper.style.height= (cellHeight+(border*2)*6)+(헤더높이+days높이) +"px"; //높이
+                wrapper.style.height = cellHeight + border * 2 * 6 + (50 + 40) + "px"; //높이
+
+                //요일 영역 출력
                 for (let i = 0; i < 7; i++) {
-                    new Cell(document.getElementById("days"), cellW, 40, "e4e3e3", cellB, "black", convertDay(i, "eng"));
+                    let cell = new Cell(document.getElementById("days"), cellWidth, 40, "pink", 1, "black", convertDay(i, "eng"));
                 }
 
-                for (let i = 0; i < 6; i++) {
-                    for (let j = 0; j < 7; j++) {
-                        cellArray.push(new Cell(document.getElementById("section"), cellW, cellH, "#ffff", cellB, "black", " "));
+                for (let a = 0; a < 6; a++) {
+                    //6층
+                    for (let i = 0; i < 7; i++) {
+                        //7호수(일주일은 7일이므로)
+                        let cell = new Cell(document.getElementById("section"), 100, 100, "yellow", 1, "red", "");
+                        cellArray.push(cell);
                     }
                 }
             }
 
+            //모든 셀의 innerText 스트링을 지워버리자
             function clearDate() {
-                let idx = 0;
-                for (let i = 0; i < 6; i++) {
-                    for (let j = 0; j < 7; j++) {
-                        cellArray[idx++].div.innerText = "";
+                let index = 0;
+
+                for (let a = 0; a < 6; a++) {
+                    for (let i = 0; i < 7; i++) {
+                        cellArray[index++].div.innerText = "";
                     }
                 }
             }
 
-            // 기존 셀에 출력된 날짜는 지우고, 새로운 날짜 출력
-            function printDate(currentYear, currentMonth) {
-                let idx = 0;
-                let n = 0;
-                for (let i = 0; i < 6; i++) {
-                    for (let j = 0; j < 7; j++) {
-                        let cell = cellArray[idx];
+            //이미 생성된 셀에 날짜를 출력한다..주의) 다음, 이전 버튼을 누르면
+            //기존에 셀에 출력된 날짜는 지우고, 새로운 날짜를 출력..
+            function printDate() {
+                let count = 0; //셀의 인덱스, 박스의 순번..(날짜 아님...)
+                let n = 0; //유저가 보게될 달력의 날짜 수(1일,2일...)
 
-                        if (idx >= getStartDay(currentYear, currentMonth) && idx <= getLastDate(currentYear, currentMonth + 1)) {
-                            console.log(idx + " " + getLastDate(currentYear, currentMonth + 1));
-                            cell.div.innerText = ++n;
+                for (let a = 0; a < 6; a++) {
+                    for (let i = 0; i < 7; i++) {
+                        let cell = cellArray[count]; //셀 하나를 끄집어 내기
+                        if (count >= getStartDay(currentYear, currentMonth) && n < getLastDate(currentYear, currentMonth)) {
+                            n++; //1씩 증가를 아무때나 하지말고, 참고있다가..count가 해당월의
+                            //시작요일을 만나는 순간부터...
+                            cell.div.innerText = n;
                         }
-                        idx++;
+                        count++;
                     }
                 }
             }
 
-            // 현재 날짜 얻어오기
+            //현재 날짜 얻어오기
             function getCurrentDate() {
                 let d = new Date();
                 currentYear = d.getFullYear();
                 currentMonth = d.getMonth();
             }
 
-            // 다음/이전 버튼 누를때마다 호출
+            //헤더영역에 현재 보고있는 날짜 출력  년,월
             function printTitle(yy, mm) {
+                //다음, 이전 버튼 누를때마다 호출할것이므로,연,월 매개변수로 변하게하자
                 let d = new Date(yy, mm);
-                currentYear = d.getFullYear();
-                currentMonth = d.getMonth();
+                let currentYear = d.getFullYear();
+                let currentMonth = d.getMonth();
 
-                document.getElementById("title").innerText = `${currentYear}년 ${currentMonth + 1}월`;
+                let h2 = document.querySelector("#header h2");
+                h2.innerText = `${currentYear}년 ${currentMonth + 1}월`;
             }
 
-            addEventListener("load", () => {
+            /*아래의 이벤트 리스너에 두번째 매개변수로 들어가야 하는 함수는
+        정의를 해야하지, 호출해서는 안된다..
+        두번째 매개변수에 등록되는 함수는 개발자가 호출하는 함수가 아니라,
+        브라우저가 load 이벤트 발생시 거꾸로 호출을해주는 역할을하므로 
+        callback 함수로 부른다..*/
+
+            addEventListener("load", function () {
+                //현재 날짜를 제목에 출력부터 해주자
                 getCurrentDate();
                 createCell();
-
                 printTitle(currentYear, currentMonth);
                 printDate(currentYear, currentMonth);
-                /* 이전 버튼 클릭 이벤트 */
+
+                //현재 보고 있는 월의 시작요일을 조사해보자
+                //console.log(getStartDay(currentYear, currentMonth));
+
+                //달력의 제목을 이전, 다음 버튼으로 바꾸자
                 let bt_prev = document.querySelector("#header :nth-child(1)");
-                bt_prev.addEventListener("click", () => {
-                    printTitle(currentYear, --currentMonth);
+                let bt_next = document.querySelector("#header :nth-child(3)");
+
+                bt_prev.addEventListener("click", function () {
+                    currentMonth--; //이전 월로 설정
+                    printTitle(currentYear, currentMonth);
                     clearDate();
                     printDate(currentYear, currentMonth);
                 });
-                /* 다음 버튼 클릭 이벤트 */
-                let bt_next = document.querySelector("#header :nth-child(3)");
-                bt_next.addEventListener("click", () => {
-                    printTitle(currentYear, ++currentMonth);
+
+                bt_next.addEventListener("click", function () {
+                    currentMonth++; //다음 월로 설정
+                    printTitle(currentYear, currentMonth);
                     clearDate();
                     printDate(currentYear, currentMonth);
                 });
@@ -131,9 +151,9 @@
     <body>
         <div id="wrapper">
             <div id="header">
-                <a href="#">◀</a>
-                <h2 id="title"></h2>
-                <a href="#">▶</a>
+                <a href="#">이전</a>
+                <h2>1995</h2>
+                <a href="#">다음</a>
             </div>
             <div id="days"></div>
             <div id="section"></div>
