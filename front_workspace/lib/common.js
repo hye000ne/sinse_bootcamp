@@ -3,8 +3,16 @@
 랜덤한 값을 반환하는 함수 정의
 *---------------------------------------------------*/
 function getRandom(max) {
-    //0보다 크고~~ 1보다 작은 난수
     return parseInt(Math.random() * (max + 1));
+}
+
+/*---------------------------------------------------
+시작값과 갯수를 넣으면, 시작값부터 해당 갯수만큼  
+랜덤한 값을 반환하는 함수 정의
+API 사용 예) getRandomWithStart(1, 3) => 1부터 4까지
+*---------------------------------------------------*/
+function getRandomWithStart(start, count) {
+    return parseInt(Math.random() * count + start);
 }
 
 /*---------------------------------------------------
@@ -45,4 +53,23 @@ function convertDay(n, lang) {
 function getLastDate(yy, mm) {
     let d = new Date(yy, mm + 1, 0);
     return d.getDate();
+}
+
+/*---------------------------------------------------
+ 게임 충돌 체크 함수
+*---------------------------------------------------*/
+function collisionCheck(me, target) {
+    //나에 대한 수치계산
+    const me_x = parseInt(me.style.left);
+    const me_y = parseInt(me.style.top);
+    const me_w = parseInt(me.style.width);
+    const me_h = parseInt(me.style.height);
+
+    //목표에 대한 수치계산
+    const target_x = parseInt(target.style.left);
+    const target_y = parseInt(target.style.top);
+    const target_w = parseInt(target.style.width);
+    const target_h = parseInt(target.style.height);
+
+    return !(me_x + me_h < target_x || me_x > target_x + target_w || me_y + me_h < target_y || me_y > target_y + target_h);
 }
