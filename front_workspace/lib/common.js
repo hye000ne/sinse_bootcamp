@@ -7,12 +7,11 @@ function getRandom(max) {
 }
 
 /*---------------------------------------------------
-시작값과 갯수를 넣으면, 시작값부터 해당 갯수만큼  
-랜덤한 값을 반환하는 함수 정의
-API 사용 예) getRandomWithStart(1, 3) => 1부터 4까지
+범위를 지정한 랜덤
+API 사용 예) getRandomByRange(1, 3) => 1부터 4 사이 랜덤값 반환
 *---------------------------------------------------*/
-function getRandomWithStart(start, count) {
-    return parseInt(Math.random() * count + start);
+function getRandomByRange(min, max) {
+    return min + parseInt(Math.random() * (max - min + 1));
 }
 
 /*---------------------------------------------------

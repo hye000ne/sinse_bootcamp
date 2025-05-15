@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <script src="./js/Word.js"></script>
+        <script src="./js/HP.js"></script>
+        <script src="../../lib/common.js"></script>
+
+        <style>
+            #wrapper {
+                width: 1250px;
+                height: 700px;
+                background-color: #fff;
+                margin: auto;
+            }
+
+            #aside {
+                width: 150px;
+                height: 100%;
+                background-color: rgb(221, 224, 240);
+                float: left;
+            }
+
+            #aside * {
+                width: 90%;
+            }
+
+            #aside button,
+            #aside input[type="text"] {
+                height: 35px;
+                margin: 10px auto;
+                padding: 5px;
+                border: 1px solid #aaa;
+                border-radius: 5px;
+                font-size: 14px;
+                display: block;
+            }
+
+            button:hover {
+                background-color: #ddd;
+            }
+
+            #content {
+                width: 1100px;
+                height: 100%;
+                background-color: rgb(202, 208, 240);
+                float: left;
+                position: relative;
+                overflow: hidden;
+            }
+
+            #box {
+                margin-top: 50px;
+                width: 150px;
+                height: 150px;
+                background-color: white;
+                position: relative;
+            }
+        </style>
+
+        <script>
+            let wordList; //프로그램이 종료될때까지 총 4레벨까지 게임 가능한 데이터
+            let wordArray = []; //단어 객체 인스턴스 배열
+            let hpArray = []; //HP 인스턴스 배열
+
+            let st; //interval 변수
+            let speed = 600; // 단어 떨어지는 속도 (레벨이 올라갈수록 숫자 감소)
+            let level = 0;
+
+            function loadData(e) {
+                let file = e.target.files[0];
+                let reader = new FileReader();
+
+                reader.onload = function (data) {
+                    let jsonString = data.target.result;
+                    let obj = JSON.parse(jsonString);
+
+                    wordList = obj.wordList;
+                    createWord();
+
+                    document.querySelector("button").disabled = false;
+                };
+
+                reader.readAsText(file);
+            }
+
+            function createWord() {
+                let content = document.getElementById("content");
+
+                for (let i = 0; i < wordList[level].length; i++) {
+                    wordArray.push(new Word(content, 70 + i * 95, getRandomByRange(-25, -150), wordList[level][i], "red"));
+                }
+            }
+
+            function nextStep() {
+                wordArray.forEach((e) => {
+                    e.tick();
+                    e.render();
+                });
+            }
+
+            function checkLevel() {
+                if (wordArray.length == 0) {
+                    alert("레벨 " + (level + 1) + " 통과를 축하드려요");
+                    level++;
+                    speed -= 200;
+                    createWord();
+                }
+            }
+
+            //단어 비교 로직
+            function checkText(obj) {
+                for (let i = 0; i < wordArray.length; i++) {
+                    if (wordArray[i].text == obj.value) {
+                        wordArray[i].span.style.background = "blue";
+
+                        //제거하기 (화면에서 제거 + 배열에서도 제거)
+                        let content = document.getElementById("content");
+                        content.removeChild(wordArray[i].span);
+                        wordArray.splice(i, 1);
+
+                        checkLevel(); //레벨 올려야 하는지 함수에 맡기기
+                    }
+                }
+            }
+
+            function isEnd() {
+                wordArray.forEach((e) => {
+                    if (e.y >= 675) deleteHP;
+                });
+            }
+
+            function gameLoop() {
+                nextStep();
+                isEnd();
+            }
+
+            function init() {
+                document.querySelector("input[type='file']").addEventListener("change", function (e) {
+                    loadData(e);
+                });
+
+                document.querySelector("#aside button").addEventListener("click", function () {
+                    if (st == undefined) {
+                        st = setInterval(gameLoop, speed);
+                        this.innerText = "게임 중지";
+                    } else {
+                        clearInterval(st);
+                        st = undefined;
+                        this.innerText = "게임 시작";
+                    }
+                });
+
+                document.querySelector("#aside input[type='text']").addEventListener("keyup", function (e) {
+                    if (e.keyCode == 13) {
+                        checkText(this);
+                        document.querySelector("#aside :nth-child(3)").value = "";
+                    }
+                });
+
+                createHP();
+            }
+
+            function createHP() {
+                for (let i = 0; i < 3; i++) {
+                    for (let j = 0; j < 3; j++) {
+                        hpArray.push(new HP(document.getElementById("box"), 5 + j * 50, 5 + i * 50, 40, 40, "pink", "red"));
+                    }
+                }
+            }
+
+            function deleteHP() {}
+
+            addEventListener("load", init);
+        </script>
+    </head>
+    <body>
+        <div id="wrapper">
+            <div id="aside">
+                <input type="file" />
+                <button disabled>게임 시작</button>
+
+                <input type="text" placeholder="단어입력" />
+                <div id="box"></div>
+            </div>
+            <div id="content"></div>
+        </div>
+    </body>
+</html>

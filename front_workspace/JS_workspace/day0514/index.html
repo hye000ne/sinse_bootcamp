@@ -108,9 +108,9 @@
             }
 
             function createEnemy() {
-                console.log(getRandomWithStart(1, 5));
+                console.log(getRandomByRange(1, 5));
 
-                enemies.push(new Enemy(stage, "../../images/plane/e" + getRandomWithStart(1, 5) + ".png", 1500, getRandom(576), 60, 60, -1 * getRandomWithStart(2, 2), 0));
+                enemies.push(new Enemy(stage, "../../images/plane/e" + getRandomByRange(1, 5) + ".png", 1500, getRandom(576), 60, 60, -1 * getRandomByRange(2, 2), 0));
             }
 
             function init() {
