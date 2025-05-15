@@ -1,29 +1,28 @@
 class Word {
-    constructor(container, x, y, content, color) {
+    constructor(container, x, y, text) {
         this.container = container;
-        this.span = document.createElement("span");
+        this.span = document.createElement('span');
         this.x = x;
         this.y = y;
-        this.content = content;
-        this.color = color;
+        this.text = text;
 
-        this.span.style.display = "inline-block";
-        this.span.style.position = "absolute";
-        this.span.style.left = this.x + "px";
-        this.span.style.top = this.y + "px";
-        this.span.style.color = this.color;
-        this.span.innerText = this.content;
+        this.span.style.position = 'absolute';
+        this.span.style.left = this.x + 'px';
+        this.span.style.top = this.y + 'px';
+        this.span.innerText = this.text;
+        this.span.style.fontSize = '20px';
+        this.span.style.color = '#333';
 
         this.container.appendChild(this.span);
     }
 
-    //물리량 변화
-    tick() {
-        this.y += 15;
+    move(speed) {
+        this.y += speed;
+        this.span.style.top = this.y + 'px';
     }
 
-    // 그래픽 처리
-    render() {
-        this.span.style.top = this.y + "px";
+    // DOM에서 제거
+    destroy() {
+        this.container.removeChild(this.span);
     }
 }

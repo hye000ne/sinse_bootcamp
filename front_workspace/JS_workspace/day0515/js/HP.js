@@ -1,22 +1,21 @@
 class HP {
-    constructor(container, x, y, w, h, bg, borderColor) {
+    constructor(container, x, y) {
         this.container = container;
-        this.div = document.createElement("div");
+        this.span = document.createElement('span');
         this.x = x;
         this.y = y;
-        this.w = w;
-        this.h = h;
-        this.bg = bg;
-        this.borderColor = borderColor;
 
-        this.div.style.position = "absolute";
-        this.div.style.left = this.x + "px";
-        this.div.style.top = this.y + "px";
-        this.div.style.width = this.w + "px";
-        this.div.style.height = this.h + "px";
-        this.div.style.backgroundColor = bg;
-        this.div.style.borderColor = "1px solid " + this.borderColor;
+        this.span.style.position = 'absolute';
+        this.span.style.left = this.x + 'px';
+        this.span.style.top = this.y + 'px';
+        this.span.innerText = '❤️';
+        this.span.style.fontSize = '40px';
 
-        this.container.appendChild(this.div);
+        this.container.appendChild(this.span);
+    }
+
+    // DOM에서 제거
+    destroy() {
+        this.container.removeChild(this.span);
     }
 }
