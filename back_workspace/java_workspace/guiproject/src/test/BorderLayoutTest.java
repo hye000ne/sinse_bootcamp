@@ -2,7 +2,7 @@
 	모든 GUI 프로그램은 컴포넌트들을 조합하여 화면을 구성하기 때문에, 각자의 배치(Layout)방법을 지원한다.
 	AWT의 배치방법은
 	1) BorderLayout : 동서남북+center의 방위를 갖는 배치 방법 / Frame은 개발자가 아무것도 지정하지 않으면 디폴트로 BorderLayout이 적요됨
-	2) FlowLayout :
+	2) FlowLayout
 	3) GridLayout
 	4) GridBagLayout
 */
