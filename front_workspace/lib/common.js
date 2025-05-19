@@ -23,7 +23,19 @@ function getRandomByRange(min, max) {
  * @returns {string} 두 자리 문자열
  */
 function zeroString(n) {
-    return String(n).padStart(2, '0');
+    return String(n).padStart(2, "0");
+}
+
+/**
+ * 요일 숫자를 언어별 문자열로 변환
+ * @param {number} n - 요일 숫자 (0 ~ 6)
+ * @param {string} lang - 'kor' 또는 'eng'
+ * @returns {string} 요일 문자열
+ */
+function convertDay(n, lang) {
+    const korArray = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
+    const engArray = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    return lang === "kor" ? korArray[n] : engArray[n];
 }
 
 /**
@@ -35,18 +47,6 @@ function zeroString(n) {
 function getStartDay(yy, mm) {
     const d = new Date(yy, mm, 1);
     return d.getDay();
-}
-
-/**
- * 요일 숫자를 언어별 문자열로 변환
- * @param {number} n - 요일 숫자 (0 ~ 6)
- * @param {string} lang - 'kor' 또는 'eng'
- * @returns {string} 요일 문자열
- */
-function convertDay(n, lang) {
-    const korArray = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
-    const engArray = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    return lang === 'kor' ? korArray[n] : engArray[n];
 }
 
 /**
@@ -77,10 +77,5 @@ function collisionCheck(me, target) {
     const target_w = parseInt(target.style.width);
     const target_h = parseInt(target.style.height);
 
-    return !(
-        me_x + me_w < target_x ||
-        me_x > target_x + target_w ||
-        me_y + me_h < target_y ||
-        me_y > target_y + target_h
-    );
+    return !(me_x + me_w < target_x || me_x > target_x + target_w || me_y + me_h < target_y || me_y > target_y + target_h);
 }
