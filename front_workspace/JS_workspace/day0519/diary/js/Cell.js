@@ -4,6 +4,7 @@ class Cell {
         this.year;
         this.month;
         this.date = date;
+        this.detail;
         this.icon;
 
         /*============ UI ============*/

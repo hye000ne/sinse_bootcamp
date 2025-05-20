@@ -18,15 +18,30 @@
             let currentMonth;
             let currentCell;
 
+            function checkDairyData(cell) {
+                // 다이어리 배열에 등록된 날짜와 일치하면 제목/아이콘 출력
+                for (let i = 0; i < diaryArray.length; i++) {
+                    if (diaryArray[i].year == cell.year && diaryArray[i].month == cell.month && diaryArray[i].date == cell.date) {
+                        cell.titleDiv.innerText = diaryArray[i].title;
+                        cell.detail = diaryArray[i].detail;
+                        cell.renderIcon(diaryArray[i].icon);
+                    }
+                }
+            }
+
             function printNum() {
                 let startDay = getStartDay(currentYear, currentMonth);
                 let endDate = getLastDate(currentYear, currentMonth);
                 let index = 0;
-                let date = 1;
+                let date = 0;
 
                 for (let i = 0; i < 6; i++) {
                     for (let j = 0; j < 7; j++) {
-                        if (startDay <= index && index < endDate + startDay) cellArray[i][j].setDate(currentYear, currentMonth, date++);
+                        if (startDay <= index && index < endDate + startDay) {
+                            date++;
+                            cellArray[i][j].setDate(currentYear, currentMonth, date);
+                            if (diaryArray.length != 0) checkDairyData(cellArray[i][j]);
+                        }
                         index++;
                     }
                 }
@@ -59,6 +74,7 @@
                     for (let j = 0; j < 7; j++) {
                         cellArray[i][j].numDiv.innerText = "";
                         cellArray[i][j].titleDiv.innerText = "";
+                        cellArray[i][j].iconDiv.innerText = "";
                     }
                 }
             }
@@ -86,6 +102,28 @@
                     printNum();
                 });
 
+                //이미지 클릭 시 파일 탐색기
+                document.querySelector("#info img").addEventListener("click", () => {
+                    document.querySelector("#fileChooser").click();
+
+                    document.querySelector("#fileChooser").addEventListener("change", (e) => {
+                        let file = e.target.files[0];
+                        let reader = new FileReader();
+                        reader.readAsText(file);
+
+                        reader.onload = function (data) {
+                            let obj = JSON.parse(data.target.result);
+                            let diaryList = obj.diaryList;
+
+                            registAll(diaryList);
+
+                            printHeader();
+                            clearCell();
+                            printNum();
+                        };
+                    });
+                });
+
                 document.querySelector("#btn-regist").addEventListener("click", regist);
                 document.querySelector("#btn-close").addEventListener("click", closeDialog);
 
@@ -93,6 +131,12 @@
                     if (e.key === "Escape") closeDialog();
                 });
             });
+
+            function registAll(diaryList) {
+                diaryList.forEach((e) => {
+                    diaryArray.push(e);
+                });
+            }
 
             function regist() {
                 let diary = {
@@ -105,6 +149,7 @@
                 };
 
                 currentCell.titleDiv.innerText = diary.title;
+                currentCell.detail = diary.detail;
                 currentCell.renderIcon(diary.icon);
 
                 diaryArray.push(diary);
@@ -114,9 +159,17 @@
             function openDialog(obj) {
                 currentCell = obj;
                 let dialog = document.getElementById("dialog");
+                let title = document.getElementById("t_title");
+                let detail = document.getElementById("t_detail");
+
                 dialog.style.left = obj.x + "px";
                 dialog.style.top = obj.y + "px";
                 dialog.style.display = "block";
+
+                if (obj.titleDiv.innerText !== undefined && obj.detail !== undefined) {
+                    title.value = obj.titleDiv.innerText;
+                    detail.value = obj.detail;
+                }
             }
 
             function closeDialog() {
@@ -128,7 +181,10 @@
     </head>
     <body>
         <div id="wrapper">
-            <div id="info"></div>
+            <div id="info">
+                <input type="file" style="display: none" id="fileChooser" />
+                <img src="../../images/icon/file.png" alt="" />
+            </div>
             <div id="header">
                 <a href="#">이전</a>
                 <span>현재 달력 날짜</span>
