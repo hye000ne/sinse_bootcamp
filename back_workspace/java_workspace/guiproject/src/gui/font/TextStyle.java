@@ -7,6 +7,7 @@ import java.awt.Label;
 import java.awt.TextField;
 import java.awt.Button;
 import java.awt.Dimension;
+import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -55,7 +56,7 @@ public class TextStyle extends Frame implements ActionListener {
 
 	public void actionPerformed(ActionEvent e){
 		//area 폰트 크기 조절
-
 		//area 폰트 색상
+		file.area.setForeground(Color.YELLOW);
 	}
 }
