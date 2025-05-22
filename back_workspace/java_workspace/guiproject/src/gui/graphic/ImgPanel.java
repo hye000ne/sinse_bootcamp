@@ -16,13 +16,28 @@ public class ImgPanel extends JPanel {
 	Image image ;
 
 	public ImgPanel(){
-		System.out.println("call");
 		setBackground(Color.YELLOW);
 		image = kit.getImage("C:/lecture_workspace/back_workspace/java_workspace/guiproject/res/geographic/animal1.jpg");
 		setPreferredSize(new Dimension(600,50));
 	}
 
 	public void paint(Graphics g){
-		g.drawImage(image, 0, 0, this);
+		g.drawImage(image, 0, 0, this);//이미지 그리기
+
+		//페인트통 교체 (팔레트 색상 선택)
+		g.setColor(java.awt.Color.RED);
+
+		//선그리기
+		g.drawLine(100,0,50,200);
+
+		//타원 그리기
+		g.drawOval(0,0,200,200);
+
+		//글씨를 그리자
+		g.setColor(java.awt.Color.YELLOW);//페인트 통 교체
+		g.setFont(new Font("Verdana", Font.BOLD, 40));
+		g.drawString("난 그래픽 텍스트야", 50,100);
+		g.drawRect(150,250, 100,100);
+
 	}
 }
