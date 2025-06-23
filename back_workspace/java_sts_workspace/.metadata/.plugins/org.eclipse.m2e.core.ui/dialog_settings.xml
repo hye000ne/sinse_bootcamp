@@ -1,25 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
-	<section name="wizardPage">
-		<list key="groupId">
-			<item value="TestApp"/>
-		</list>
-		<list key="name">
-		</list>
-		<list key="artifactId">
-			<item value="TestApp"/>
-		</list>
-		<list key="version">
-			<item value="0.0.1-SNAPSHOT"/>
-		</list>
-	</section>
-	<section name="org.eclipse.m2e.core.pom.overview">
-	</section>
-	<section name="org.eclipse.m2e.core.pom.dependencies">
-	</section>
 	<section name="MavenProjectWizardLocationPage">
 		<list key="location">
-			<item value="C:\lecture_workspace\backend\java_workspace"/>
+			<item value="C:\lecture_workspace\back_workspace\java_sts_workspace\shop"/>
 		</list>
 		<list key="projectNameTemplate">
 			<item value="[artifactId]"/>
@@ -43,15 +26,21 @@
 	</section>
 	<section name="Maven2ProjectWizardArchifactPage">
 		<list key="package">
+			<item value="com.sinse.networkapp"/>
+			<item value="com.sinse.shopadmin2"/>
+			<item value="com.sinse.threadApp"/>
+			<item value="com.sinse.shopadmin"/>
 			<item value="com.sinse.shop"/>
-			<item value="com.sinse.tablemodelapp"/>
 		</list>
 		<list key="groupId">
 			<item value="com.sinse"/>
 		</list>
 		<list key="artifactId">
+			<item value="networkapp"/>
+			<item value="shopadmin2"/>
+			<item value="threadApp"/>
+			<item value="shopadmin"/>
 			<item value="shop"/>
-			<item value="tablemodelapp"/>
 		</list>
 		<list key="projectNameTemplate">
 			<item value="[artifactId]"/>
@@ -82,6 +71,23 @@
 		</list>
 		<list key="version">
 			<item value="0.0.1-SNAPSHOT"/>
+		</list>
+	</section>
+	<section name="org.eclipse.m2e.core.pom.overview">
+	</section>
+	<section name="org.eclipse.m2e.core.pom.dependencies">
+	</section>
+	<section name="MavenCheckoutLocationPage">
+		<list key="scmUrl">
+			<item value="scm:git:https://github.com/hye000ne/shop_workspace.git"/>
+		</list>
+		<list key="projectNameTemplate">
+			<item value="[artifactId]"/>
+			<item value="[artifactId]-TRUNK"/>
+			<item value="[artifactId]-[version]"/>
+			<item value="[groupId].[artifactId]"/>
+			<item value="[groupId].[artifactId]-[version]"/>
+			<item value="[name]"/>
 		</list>
 	</section>
 </section>
