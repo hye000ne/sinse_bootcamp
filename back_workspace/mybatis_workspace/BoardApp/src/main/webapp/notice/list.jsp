@@ -55,10 +55,10 @@
 		</tr>
 		<% for(int i=0;i<list.size();i++) { %>
 			<tr>
-				<td><a href="/notice/content.jsp?id=<%= list.get(i).getNotice_id() %>"><%= list.get(i).getNotice_id() %></a></td>
+				<td><a href="/notice/content.jsp?notice_id=<%= list.get(i).getNotice_id() %>"><%= list.get(i).getNotice_id() %></a></td>
 				<td><%= list.get(i).getTitle() %></td>
 				<td><%= list.get(i).getWriter() %></td>
-				<td><%= list.get(i).getRegDate() %></td>
+				<td><%= list.get(i).getRegDate().substring(0,10) %></td>
 				<td><%= list.get(i).getHit() %></td>
 			</tr>
 		<% } %>

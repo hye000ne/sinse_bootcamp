@@ -13,32 +13,39 @@ public class NoticeDAO {
 	
 	public List<Notice> selectAll() {
 		SqlSession sqlSession = config.getSqlSession();
-		List<Notice> list = sqlSession.selectList("com.sinse.boardapp.model.Notice.selectAll");
+		List<Notice> list = sqlSession.selectList("Notice.selectAll");
 		sqlSession.close();
-		
 		return list;
 	}
 	
 	public Notice select(int noticeId) {
 		SqlSession sqlSession = config.getSqlSession();
-		Notice notice = sqlSession.selectOne("com.sinse.boardapp.model.Notice.select", noticeId);
+		Notice notice = sqlSession.selectOne("Notice.select", noticeId);
 		sqlSession.close();
 		return notice;
 	}
 	
 	public void insert(Notice notice) throws NoticeException {
 		SqlSession sqlSession = config.getSqlSession();
-		int result = sqlSession.insert("com.sinse.boardapp.model.Notice.insert", notice);
-		sqlSession.commit(); //DML의 트랜잭션 확정
+		int result = sqlSession.insert("Notice.insert", notice);
+		sqlSession.commit();
 		sqlSession.close();
 		if(result < 1) throw new NoticeException("등록 실패");
 	}
 	
-	public void uspdate() {
-		
+	public void update(Notice notice) throws NoticeException {
+		SqlSession sqlSession = config.getSqlSession();
+		int result = sqlSession.update("Notice.update", notice);
+		sqlSession.commit();
+		sqlSession.close();
+		if(result < 1) throw new NoticeException("수정 실패");
 	}
 	
-	public void delete() {
-		
+	public void delete(int noticeId) throws NoticeException {
+		SqlSession sqlSession = config.getSqlSession();
+		int result = sqlSession.delete("Notice.delete", noticeId);
+		sqlSession.commit();
+		sqlSession.close();
+		if(result < 1) throw new NoticeException("삭제 실패");
 	}
 }

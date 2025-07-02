@@ -1,9 +1,11 @@
+<%@page import="org.apache.catalina.filters.ExpiresFilter.XServletOutputStream"%>
 <%@page import="com.sinse.boardapp.model.Notice"%>
 <%@page import="com.sinse.boardapp.repository.NoticeDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
 	NoticeDAO noticeDAO = new NoticeDAO();
-	Notice notice = noticeDAO.select(Integer.parseInt(request.getParameter("id")));
+	String notice_id = request.getParameter("notice_id");
+	Notice notice = noticeDAO.select(Integer.parseInt(notice_id));
 %>
 <!DOCTYPE html>
 <html>
@@ -62,6 +64,26 @@
 		        height: 250,
 				<%-- code: "<%= notice.getContent() %>" --%>
 			});
+			
+			// 버튼 이벤트 연결
+			$("#updBtn").click(()=>{
+				if(confirm("정말 수정하시겠습니까?")) {
+					$("form").attr({
+						action : "/notice/update",
+						method : "POST"
+					});
+					
+					$("form").submit();
+				}
+			});
+ 			$("#delBtn").click(()=>{
+ 				if(confirm("정말 삭제하시겠습니까?")) {
+					location.href="/notice/delete?notice_id=<%=notice_id%>";
+ 				}
+ 			});
+			$("#listBtn").click(()=>{
+				location.href="/notice/list.jsp";
+			});
 		});
 	</script>
 </head>
@@ -70,16 +92,20 @@
 
 	<div class="container">
 		<form>
+			<input type="hidden" id="notice_id" name="notice_id" value=<%=notice.getNotice_id() %>>
 			<label for="title">Title</label> 
-			<input type="text" id="title" name="title" value=<%= notice.getTitle() %>>
+			<input type="text" id="title" name="title" value=<%= notice.getTitle()%>>
 			
 			<label for="writer">Writer</label> 
 			<input type="text" id="writer" name="writer" value=<%= notice.getWriter() %>>
 			
 			<label for="content">Content</label>
-			<textarea id="content" name="content" style="height: 200px"> <%= notice.getContent() %></textarea>
+			<textarea id="content" name="content" style="height: 200px"><%= notice.getContent()%></textarea>
+		
+			<input type="button" id="updBtn" value="수정">
+			<input type="button" id="delBtn" value="삭제">
+			<input type="button" id="listBtn" value="목록">
 		</form>
 	</div>
-
 </body>
 </html>
