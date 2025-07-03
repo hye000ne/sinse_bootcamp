@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        var cnt = 0;
+
+        function isUp(flag) {
+            if(flag) console.log("현재 수는 " + ++cnt +"입니다.");
+            else console.log("현재 수는 " + --cnt +"입니다.");
+
+        }
+    </script>
+</head>
+<body>
+    <button onclick="isUp(true)">증가</button>
+    <button onclick="isUp(false)">감소</button>
+</body>
+</html>

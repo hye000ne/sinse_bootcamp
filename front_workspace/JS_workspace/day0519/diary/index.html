@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Diary Main</title>
+        <script src="./js/Cell.js"></script>
+        <script src="../../../lib/common.js"></script>
+        <link rel="stylesheet" href="./css/style.css" />
+
+        <script>
+            /* 전역배열 */
+            let cellArray = Array.from({ length: 6 }, () => Array(7).fill(0));
+            let diaryArray = [];
+
+            /* 전역변수 */
+            let currentYear;
+            let currentMonth;
+            let currentCell;
+
+            function checkDairyData(cell) {
+                // 다이어리 배열에 등록된 날짜와 일치하면 제목/아이콘 출력
+                for (let i = 0; i < diaryArray.length; i++) {
+                    if (diaryArray[i].year == cell.year && diaryArray[i].month == cell.month && diaryArray[i].date == cell.date) {
+                        cell.titleDiv.innerText = diaryArray[i].title;
+                        cell.detail = diaryArray[i].detail;
+                        cell.renderIcon(diaryArray[i].icon);
+                    }
+                }
+            }
+
+            function printNum() {
+                let startDay = getStartDay(currentYear, currentMonth);
+                let endDate = getLastDate(currentYear, currentMonth);
+                let index = 0;
+                let date = 0;
+
+                for (let i = 0; i < 6; i++) {
+                    for (let j = 0; j < 7; j++) {
+                        if (startDay <= index && index < endDate + startDay) {
+                            date++;
+                            cellArray[i][j].setDate(currentYear, currentMonth, date);
+                            if (diaryArray.length != 0) checkDairyData(cellArray[i][j]);
+                        }
+                        index++;
+                    }
+                }
+            }
+
+            function printHeader() {
+                document.querySelector("#header span").innerText = `${currentYear}년 ${currentMonth + 1}월`;
+            }
+
+            function getCurrentTime(year, month) {
+                // 0이하가 되면 연도 자동 계산
+                let d = new Date(year, month);
+                currentYear = d.getFullYear();
+                currentMonth = d.getMonth();
+            }
+
+            function createCell() {
+                let content = document.getElementById("content");
+
+                for (let i = 0; i < 6; i++) {
+                    for (let j = 0; j < 7; j++) {
+                        cellArray[i][j] = new Cell(content, j * 100, i * 100, 100, 100, "#fbfbf2", "#e7e7e7", "");
+                    }
+                }
+            }
+
+            // 기존 셀의 그래픽 초기화
+            function clearCell() {
+                for (let i = 0; i < 6; i++) {
+                    for (let j = 0; j < 7; j++) {
+                        cellArray[i][j].numDiv.innerText = "";
+                        cellArray[i][j].titleDiv.innerText = "";
+                        cellArray[i][j].iconDiv.innerText = "";
+                    }
+                }
+            }
+
+            addEventListener("load", () => {
+                let d = new Date();
+                getCurrentTime(d.getFullYear(), d.getMonth()); //현재 날짜 구하기
+                printHeader(); // 달력 제목 출력
+                createCell(); // 달력 셀 만들기
+                printNum(); // 달력 날짜 출력
+
+                // 이전 버튼 클릭 시
+                document.querySelector("#header a:nth-child(1)").addEventListener("click", () => {
+                    getCurrentTime(currentYear, currentMonth - 1);
+                    printHeader();
+                    clearCell();
+                    printNum();
+                });
+
+                // 다음 버튼 클릭 시
+                document.querySelector("#header a:nth-child(3)").addEventListener("click", () => {
+                    getCurrentTime(currentYear, currentMonth + 1);
+                    printHeader();
+                    clearCell();
+                    printNum();
+                });
+
+                //이미지 클릭 시 파일 탐색기
+                document.querySelector("#info img").addEventListener("click", () => {
+                    document.querySelector("#fileChooser").click();
+
+                    document.querySelector("#fileChooser").addEventListener("change", (e) => {
+                        let file = e.target.files[0];
+                        let reader = new FileReader();
+                        reader.readAsText(file);
+
+                        reader.onload = function (data) {
+                            let obj = JSON.parse(data.target.result);
+                            let diaryList = obj.diaryList;
+
+                            registAll(diaryList);
+
+                            printHeader();
+                            clearCell();
+                            printNum();
+                        };
+                    });
+                });
+
+                document.querySelector("#btn-regist").addEventListener("click", regist);
+                document.querySelector("#btn-close").addEventListener("click", closeDialog);
+
+                document.body.addEventListener("keyup", function (e) {
+                    if (e.key === "Escape") closeDialog();
+                });
+            });
+
+            function registAll(diaryList) {
+                diaryList.forEach((e) => {
+                    diaryArray.push(e);
+                });
+            }
+
+            function regist() {
+                let diary = {
+                    year: currentYear,
+                    month: currentMonth,
+                    date: currentCell.date,
+                    title: document.querySelector("#t_title").value,
+                    detail: document.querySelector("#t_detail").value,
+                    icon: "../../../images/icon/pencil.png",
+                };
+
+                currentCell.titleDiv.innerText = diary.title;
+                currentCell.detail = diary.detail;
+                currentCell.renderIcon(diary.icon);
+
+                diaryArray.push(diary);
+                closeDialog();
+            }
+
+            function openDialog(obj) {
+                currentCell = obj;
+                let dialog = document.getElementById("dialog");
+                let title = document.getElementById("t_title");
+                let detail = document.getElementById("t_detail");
+
+                dialog.style.left = obj.x + "px";
+                dialog.style.top = obj.y + "px";
+                dialog.style.display = "block";
+
+                if (obj.titleDiv.innerText !== undefined && obj.detail !== undefined) {
+                    title.value = obj.titleDiv.innerText;
+                    detail.value = obj.detail;
+                }
+            }
+
+            function closeDialog() {
+                document.getElementById("t_title").value = "";
+                document.getElementById("t_detail").value = "";
+                document.getElementById("dialog").style.display = "none";
+            }
+        </script>
+    </head>
+    <body>
+        <div id="wrapper">
+            <div id="info">
+                <input type="file" style="display: none" id="fileChooser" />
+                <img src="../../images/icon/file.png" alt="" />
+            </div>
+            <div id="header">
+                <a href="#">이전</a>
+                <span>현재 달력 날짜</span>
+                <a href="#">다음</a>
+            </div>
+            <div id="days"></div>
+            <div id="content">
+                <div id="dialog">
+                    <div>
+                        <input type="text" id="t_title" placeholder="제목입력" />
+                    </div>
+                    <div>
+                        <textarea id="t_detail" placeholder="내용입력"></textarea>
+                    </div>
+                    <div>
+                        <button id="btn-regist">등록</button>
+                        <button id="btn-close">닫기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

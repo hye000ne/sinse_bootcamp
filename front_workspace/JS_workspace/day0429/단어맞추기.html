@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div {
+            border-radius: 10px;
+        }
+
+        #wrapper {
+            width: 400px;
+            height: 500px;
+            background-color: antiquewhite;
+            margin: auto;
+        }
+        
+        #content {
+            width : 100%;
+            height: 300px;
+            background-color: rgb(250, 237, 220);
+            text-align: center;
+            font-size: 100px;
+            font-weight: bold;
+            line-height: 300px;
+        }
+        
+        #input_area{
+            width: 100%;
+            height: 50px;
+            background-color: rgb(245, 204, 150);
+        }
+        
+        input {
+            width: 396px;
+            height: 48px;
+            border: none;
+            font-size: 40px;
+        }
+        
+        #feedback{
+            width: 100%;
+            height: 100px;
+            background-color: rgb(247, 219, 183);
+            text-align: center;
+            color : red;
+            font-size: 75px;
+            font-weight: bold;
+            line-height: 100px;
+        }
+        
+        #score{
+            width: 100%;
+            height: 50px;
+            background-color: rgb(212, 188, 155);
+            text-align: center;
+            font-size: 50px;
+            font-weight: bold;
+            line-height: 50px;
+        }
+        </style>
+
+        <script>
+            let wordArray=["강아지","고양이","토끼","사자","호랑이","기린","늑대","햄스터","카피바라","치타"];
+            
+            /* body 영역 전역변수화 */
+            let content;
+            let inputBox;
+            let feedback;
+            let score;
+
+            let idx = 0; //단어 배열 접근 index
+            let scoreSum = 0; //점수 합
+
+            function next() {
+                score.innerText = scoreSum; // 스코어 점수 증가
+                content.innerText = wordArray[++idx]; //컨텐츠 단어 변경
+                
+                if(idx >= wordArray.length) { // 단어 끝까지 가면 끝 출력, 피드백 초기화
+                    content.innerText = "끝!";
+                    feedback.innerText = "";
+                }
+            }
+
+            function init(){
+                content = document.querySelector("#content");
+                inputBox = document.querySelector("input");
+                feedback = document.querySelector("#feedback");
+                score = document.querySelector("#score");
+
+                inputBox.addEventListener("keyup",()=>{
+                    if(event.keyCode == 13){
+                        if(content.innerText==inputBox.value){
+                            scoreSum += 10;
+                            next();
+                            feedback.innerText="맞았어요.";
+                        }else{
+                            feedback.innerText="틀렸어요.";
+                        }
+
+                        inputBox.value = ""; //입력 박스 초기화
+                    }
+                });
+
+                content.innerText = wordArray[idx]; // 컨텐츠 wordArray[0]의 값으로 초기화
+                score.innerText = 0; // 스코어 0으로 초기화.
+            }
+
+            addEventListener("load",()=>{
+                init();
+            });
+        </script>
+</head>
+<body>
+    <div id="wrapper">
+        <div id="content"></div>
+        <div id="input_area">
+            <input type="text">
+        </div>
+        <div id="feedback"></div>
+        <div id="score"></div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #wrapper {
+            width: 900px;
+            height: 600px;
+            margin : auto;
+        }
+
+        #aside { 
+            width: 200px;
+            height: 600px;
+            float: left;
+            text-align: center;
+            background-color: bisque;
+        }
+        
+        #content {
+            width: 700px;
+            height: 600px;
+            float: left;
+
+            background-color: antiquewhite;
+            position: relative;
+            overflow: hidden;
+
+            background-image: url(../../../images/plane/bg.jpg);
+        }
+
+        button {
+            width: 60px;
+            height: 50px;
+            background-color: aquamarine;
+            border-radius: 10px;
+        }
+
+        #hero {
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            left : 200px;
+            top :100px
+        }
+    </style>
+    
+    <script>
+        var x = 200;
+        var y = 100;
+
+        function move(str){
+            let hero = document.querySelector("#hero");
+            if(str == 'up') {
+                y -= 10;
+                hero.style.top = y+"px";
+            }
+            if(str == 'down'){
+                y += 10;
+                hero.style.top = y+"px";
+            }
+            if(str == 'left') {
+                x -= 10;
+                hero.style.left = x+"px";
+            }
+            if(str == 'right') {
+                x += 10;
+                hero.style.left = x+"px";
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="wrapper">
+        <div id="aside">
+            <table style="width: 200px; height: 100px;">
+                <tr>
+                    <td></td>
+                    <td><button onclick="move('up')">↑</button></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><button onclick="move('left')">←</button></td>
+                    <td><button onclick="move('down')">↓</button></td>
+                    <td><button onclick="move('right')">→</button></td>
+                </tr>
+            </table>
+
+        </div>
+        <div id="content">
+            <img id="hero" src="../../../images/plane/plane.png" alt="">
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <script src="./js/Bullet.js"></script>
+        <script src="../../lib/common.js"></script>
+
+        <script>
+            let bulletArray = [];
+            let colors = ["red", "yellow", "green", "blue", "purple", "orange", "black"];
+
+            function fire() {
+                bulletArray.push(new Bullet(getRandom(800 + 1), colors[getRandom(colors.length)]));
+            }
+
+            function gameLoop() {
+                bulletArray.forEach((element) => {
+                    element.move();
+                });
+            }
+
+            addEventListener("load", () => {
+                setInterval(gameLoop, 100);
+            });
+        </script>
+    </head>
+    <body>
+        <button onclick="fire()">발사</button>
+    </body>
+</html>

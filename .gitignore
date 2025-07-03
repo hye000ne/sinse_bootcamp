@@ -1,0 +1,26 @@
+# 이미지 폴더 제외
+front_workspace/images/
+front_workspace/*/images/
+back_workspace/*/.metadata/
+back_workspace/*/.metadata/**
+
+# Maven build directory
+target/
+
+# Eclipse project files
+.classpath
+.project
+.settings/
+
+# IntelliJ IDEA
+*.iml
+.idea/
+
+# 기타 빌드 산출물
+*.jar
+*.war
+*.ear
+
+# OS별 불필요 파일
+.DS_Store
+Thumbs.db

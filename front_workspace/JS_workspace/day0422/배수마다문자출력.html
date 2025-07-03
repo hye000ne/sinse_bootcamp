@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #cnt {
+            font-size: 200px;
+        }
+    </style>
+    <script>
+        var n = 0;
+        function up(){
+            /*5의 배수에선 '사과'라고 나와야함*/ 
+            n++;
+            var cnt = document.getElementById('cnt');
+            var msg = (n%5==0)? "사과":n;            
+            cnt.innerText=msg;
+        }
+
+    </script>
+</head>
+<body>
+    <button onclick="up()">카운터 증가</button>
+
+    <div id="cnt">0</div>
+</body>
+</html>

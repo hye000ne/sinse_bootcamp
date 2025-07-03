@@ -1,0 +1,283 @@
+<script>
+    // 1번 문제
+    // (1) O (2) X (3) O (4) X (5) X (6) X (7) X
+    // 2번 문제
+    // a,b,d,c,b,d,c,b
+    // 3번 문제
+    // 4
+    // 4번 문제
+    // (1)10 (2)10 (3)8 (4)5 (5)infinite (6)11 (7)5 (8)10 (9)10 (10)10
+
+    
+    // 5번 문제
+
+    for(let i = 0; i < 10; i++) {
+        document.write("☆");
+    }
+
+
+    // 6번 문제
+    // i += 2
+    // 7번 문제
+    // 12345
+
+/*
+    // 8번 문제
+    for(let i = 1; i <= 96; i++) {
+        document.write("★");
+        if(i % 10 == 0) {      // 10번마다, 10으로 나누어떨어질 때
+            document.write("<br>");
+        }
+    }
+
+
+    // 9번 문제
+    for(let i = 1; i <= 25; i++){
+        if(i % 5 == 0) {    // 5번째마다
+            document.write("★<br>");
+        } else {
+            document.write("☆");
+        }
+    }
+  
+    for(let i = 1; i <= 24; i++) {
+        document.write("☆");
+        if(i % 4 == 0) {
+            document.write("★<br>");
+        }
+    }
+    
+
+    // 10번 문제
+    // 반복문에서 중요한 것은 횟수
+    // 반복문 구조를 작성한 후 내용을 본다
+    for(let i = 1; i <= 10; i++) {
+        //document.write(i + "회반복<br>");
+        document.write(`${i}회반복<br>`);        // 템플릿 문자열 표기(쌍따옴표 대신 백틱으로 감싸고 
+                                                // 변수를 대상으로 ${} 감싸면 된다.)
+    }
+
+
+    // 11번 문제
+    for(let i = 2; i <= 10; i += 2) {
+        document.write(`${i}회반복<br>`);
+    }
+
+  
+    // 12번 문제
+    for(let i = 1; i <= 10; i++){
+        if(i % 2 == 0) {
+            document.write("짝수<br>");
+        } else {
+            document.write(`${i}<br>`);
+        }
+    }
+
+    for(let i = 1; i <= 10; i++) {
+        let str = (i % 2 == 0) ? "짝수" : i;
+        document.write(str + "<br>");
+    } 
+  
+ 
+    // 13번 문제
+    for(let i = 1; i <= 10; i++) {
+        if(i % 3 == 0) {
+            document.write("★<br>");
+        } else {
+            document.write(i + "회반복<br>");
+        }
+    }
+
+    for(let i = 1; i<= 10; i++) {
+        let str = (i % 3 == 0) ? "★" : i + "회반복";
+        document.write(str + "<br>");
+    }
+
+
+    // 14번 문제
+    for(let i = 1; i <= 20; i++){
+        if(i % 5 == 0) {
+            document.write("★");
+        } else {
+            document.write("☆");
+        }
+    }
+         
+
+    // 15번 문제
+    for(let i = 105; i <= 108; i++) {
+        document.write(i + "<br>");
+    }
+
+    
+    // 16번 문제
+    for(let i = 1; i <= 9; i++){
+        document.write(`3 * ${i} = ${3 * i}<br>`);
+    }
+
+
+    // 17번 문제
+    let n = prompt("원하는 단을 입력하세요");
+    n = parseInt(n);    // 문자열화된 숫자문자를 실제 정수로.
+    for(let i = 1; i <= 9; i++) {
+        document.write(`${n} * ${i} = ${n * i}<br>`);
+    }
+
+    
+    // 18번 문제
+    for(let i = 1; i <= 9; i++) {
+        document.write(`${3 * i} = 3 * ${i}<br>`);
+    }
+
+
+    // 19번 문제
+    for(let i = 1; i <= 8; i++) {
+        document.write(`${i} * ${i + 1} = ${i * (i + 1)}<br>`);
+    }
+ 
+
+    // 20번 문제
+    for(let i = 9; i >= 1; i--) {
+        document.write(`5 * ${i} = ${5 * i}<br>`);
+    }
+
+
+    // 21번 문제
+    for(let i = 1; i <= 10; i++) {
+        if(i <= 5) {    // 5번째까지는 흰 별
+            document.write("☆");
+        } else {
+            document.write("★");
+        }
+    }
+
+    for(let i = 1; i <= 10; i++) {
+        let str = (i <= 5) ? "☆" : "★";
+        document.write(str);
+    }
+ 
+
+    // 22번 문제
+    // 135
+
+
+    // 23번 문제
+    let n = parseInt(prompt("원하는 수를 입력하세요"));
+
+    for(let i = n; i > 0; i--){
+        document.write(`${i}`);
+        if(i != 1) {
+            document.write(",");
+        }
+    }
+
+
+    // 24번 문제    시작값=입력값-1, 끝값=입력값+1, i++
+    let n = parseInt(prompt("원하는 수를 입력하세요"));
+
+    for(let i = n - 1; i <= (n + 1); i++) {
+        document.write(`${i}`);
+        if(i != (n + 1)){
+            document.write(",");
+        } 
+    }
+
+
+    // 25번 문제
+    let str = prompt("출력할 문자를 입력하세요");
+    let n = parseInt(prompt("횟수를 입력하세요"));
+
+    for(let i = 1; i <= n; i++) {
+        document.write(`${str}`);
+    }
+
+
+    // 26번 문제
+    let n = parseInt(prompt("별을 몇 번째마다 개행할지 입력하세요"));
+
+    for(let i = 1; i <= 100; i++) {
+        document.write("★");
+        if(i % n == 0) {
+            document.write("<br>");
+        }
+    }
+
+
+    // 27번 문제
+    // 어떤 수 n을 입력받으면 반복횟수는 그 n x n 만큼 반복하면 되고, 줄바꿈은 n번째에서 실행.
+    let n = parseInt(prompt("원하는 숫자를 입력하세요"));
+
+    for(let i = 1; i <= n * n; i++) {
+        document.write("★");
+        // 제어문의 브레이스를 생략하면, 그 제어문의 영향력은 바로 아래 한줄까지만.
+        if(i % n == 0) document.write("<br>");  
+    }
+
+
+    // 28번 문제
+    15, 12, 36, 2, 36, 22, 22
+
+
+    // 29번 문제
+    const nTR = 3;
+    const nTD = 5;
+
+    document.write(`<table border="1px" width="300px" height="250px"`);
+    for(let i = 0; i < nTR; i++) {
+        document.write("<tr>");
+        for(let j = 0; j < nTD; j++) {
+            document.write("<td></td>");
+        }
+        document.write("</tr>");
+    }
+    document.write("</table>");
+
+
+    // 30번 문제
+    // 4
+
+
+    // 31번 문제
+    let nTR = parseInt(prompt("TR 개수를 입력하세요"));
+    let nTD = parseInt(prompt("TD 개수를 입력하세요"));
+
+    document.write(`<table border="1px" width="300px" height="250px"`);
+    for(let i = 0; i < nTR; i++) {
+        document.write("<tr>");
+        for(let j = 0; j < nTD; j++) {
+            document.write("<td></td>");
+        }
+        document.write("</tr>");
+    }
+    document.write("</table>")
+
+
+    // 32번 문제
+    for(let i = 1; i <= 5; i++) {
+        for(let j = 1; j <= 4; j++) {
+            document.write("☆");
+        }
+        document.write("★<br>");
+    }
+
+
+    // 33번 문제
+    for(let i = 1; i <= 9; i++) {
+        for(let j = 2; j <= 9; j++) {
+            document.write(`${j} * 1 = ${j} `);
+        }
+        document.write("<br>");
+    }
+
+
+    // 34번 문제
+    for(let i = 1; i <= 9; i++) {
+        for(let j = 2; j <= 9; j++) {
+            document.write(`${j} * ${i} = ${j * i} `);
+        }
+        document.write("<br>");
+    }
+*/
+
+</script>    
+    

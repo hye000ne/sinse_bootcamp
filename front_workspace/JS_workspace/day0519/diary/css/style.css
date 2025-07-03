@@ -1,0 +1,80 @@
+body {
+    margin: 0;
+}
+
+#wrapper {
+    margin: auto;
+    width: 700px;
+    height: 750px;
+}
+
+#info {
+    width: 100%;
+    height: 60px;
+    background-color: rgb(110, 175, 153);
+    text-align: right;
+    line-height: 5.5;
+}
+
+#info img {
+    margin: 10px 10px;
+    width: 40px;
+    cursor: pointer;
+}
+
+#header {
+    width: 100%;
+    height: 50px;
+    background-color: rgb(136, 224, 195);
+    text-align: center;
+    font-size: 25px;
+    line-height: 45px;
+}
+
+#header a {
+    margin: 0px 40px;
+    text-decoration: none;
+    color: black;
+    font-size: 15px;
+}
+
+#days {
+    width: 100%;
+    height: 40px;
+    background-color: rgb(227, 253, 245);
+    position: relative;
+}
+
+#content {
+    width: 100%;
+    height: 600px;
+    background-color: rgb(159, 206, 192);
+    position: relative;
+}
+
+#dialog {
+    width: 220px;
+    height: 250px;
+    border-radius: 10px;
+    background-color: bisque;
+    position: absolute;
+    z-index: 50;
+    display: none;
+    text-align: center;
+}
+
+#dialog input,
+textarea {
+    border: 1px solid #ccc;
+    margin: 1px;
+}
+
+#dialog input {
+    width: 96%;
+    height: 27px;
+}
+
+#dialog textarea {
+    width: 96%;
+    height: 170px;
+}

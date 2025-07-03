@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <script src="../../lib/common.js"></script>
+        <script src="./js/Rect.js"></script>
+        <style>
+            #wrapper {
+                margin: auto;
+                background-color: beige;
+                position: relative;
+            }
+        </style>
+        <script>
+            let width = 20;
+            let height = 400;
+            let count = 15;
+
+            let colors = ["red", "yellow", "blue", "green", "navy", "black", "purple", "yellowgreen"];
+
+            let init = function () {
+                let wrapper = document.querySelector("#wrapper");
+                wrapper.style.width = count * width + "px";
+                wrapper.style.height = height + "px";
+
+                for (let i = 0; i < count; i++) {
+                    new Rect(wrapper, i * width, 0, width, height, colors[getRandom(colors.length)]);
+                }
+            };
+
+            addEventListener("load", init);
+        </script>
+    </head>
+    <body>
+        <div id="wrapper"></div>
+    </body>
+</html>

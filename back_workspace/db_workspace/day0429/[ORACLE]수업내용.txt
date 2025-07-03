@@ -1,0 +1,213 @@
+SQL> -- 오라클의 최고 권한자로 로그인하여 새로운 프로젝트에 대비하여 DB를 구축하고 새로운 계정도 만들어보자
+SQL> -- 현재 접속한 계정을 확인하는 방법
+SQL> show user;
+USER is "JAVA"
+SQL> -- 오라클 DB라는 용어보다는 tablespace라는 용어를 사용하여 여러 DB 파일을 묶는 논리적 개념
+SQL> -- table space 신규 구축
+SQL> create tablespace JAVASPACE
+  2  datafile 'C:\oraclexe\app\oracle\oradata\XE\JAVASPACE.DBF';
+create tablespace JAVASPACE
+*
+ERROR at line 1:
+ORA-01031: insufficient privileges 
+
+
+SQL> datafile 'C:\oraclexe\app\oracle\oradata\XE\JAVASPACE.DBF'
+SP2-0734: unknown command beginning "datafile '..." - rest of line ignored.
+SQL> create tablespace JAVASPACE
+  2  datafile 'C:\oraclexe\app\oracle\oradata\XE\JAVASPACE.DBF'
+  3  SIZE 2M;
+create tablespace JAVASPACE
+*
+ERROR at line 1:
+ORA-01031: insufficient privileges 
+
+
+SQL> -- 유저를 생성한다.
+SQL> create user js
+  2  indentified by 1234
+  3  default tablespace javaspce
+  4  quota unlimited on javaspce;
+indentified by 1234
+*
+ERROR at line 2:
+ORA-00922: missing or invalid option 
+
+
+SQL> --이 시점부터 접속 유저를 전환하자
+SQL> --즉 새로운 접속 프로그램을 실행하자는 뜻이 아니라
+SQL> --현재 프로그램은 유지한 채로 접속유저만 바꾸자
+SQL> connect java/1234
+Connected.
+SQL> --접속 유저가 누군지 다시 확인
+SQL> show user;
+USER is "JAVA"
+SQL> create table membership(
+  2  id varchar2(20),
+  3  pwd varchar2(64),
+  4  name varchar2(20),
+  5  age number
+  6  );
+
+Table created.
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1  create table membership(
+  2  id varchar2(20),
+  3  pwd varchar2(64),
+  4  name varchar2(20),
+  5  age number
+  6* )
+SQL> 
+SQL> -- 레코드 한 건 넣기
+SQL> INSERT INTO MEMBERSHIP (ID, PWD, NAME, AGE) VALUES ('ADAMS','0000','AD', 25);
+
+1 row created.
+
+SQL> --1건의 레코드가 들어간 내용을 출력해보자
+SQL> SELECT * FROM MEMBERSHIP;
+
+ID                                                                              
+----------------------------------------                                        
+PWD                                                                             
+--------------------------------------------------------------------------------
+NAME                                            AGE                             
+---------------------------------------- ----------                             
+ADAMS                                                                           
+0000                                                                            
+AD                                               25                             
+                                                                                
+
+SQL> --SQLPLUS 툴 자체 명령어 중 한줄에 몇개의 글자가 올지를 결정 짓는 기능이 있다.
+SQL> --주의)SQL문이 아니라 그냥 툴명령
+SQL> SET LINE 400
+SQL> SELECT * FROM MEMBERSHIP;
+
+ID                                       PWD                                                                                                                              NAME                                            AGE                                                                                                                                                                                   
+---------------------------------------- -------------------------------------------------------------------------------------------------------------------------------- ---------------------------------------- ----------                                                                                                                                                                                   
+ADAMS                                    0000                                                                                                                             AD                                               25                                                                                                                                                                                   
+
+SQL> INSERT INTO MEMBERSHIP (ID, PWD, NAME, AGE) VALUES ('ADAMS','1234','AD', 25);
+
+1 row created.
+
+SQL> INSERT INTO MEMBERSHIP (ID, PWD, NAME, AGE) VALUES ('ADAMS','2222','AD', 25);
+
+1 row created.
+
+SQL> SELECT * FROM MEMBERSHIP;
+
+ID                                       PWD                                                                                                                              NAME                                            AGE                                                                                                                                                                                   
+---------------------------------------- -------------------------------------------------------------------------------------------------------------------------------- ---------------------------------------- ----------                                                                                                                                                                                   
+ADAMS                                    0000                                                                                                                             AD                                               25                                                                                                                                                                                   
+ADAMS                                    1234                                                                                                                             AD                                               25                                                                                                                                                                                   
+ADAMS                                    2222                                                                                                                             AD                                               25                                                                                                                                                                                   
+
+SQL> DELETE MEMBERSHIP WHERE ID='ADAMS';
+
+3 rows deleted.
+
+SQL> --기존에 생성한 MEMBERSHIP테이블은 검증되지 않고 결점이 많은 데이터를 허용하므로, 데이터의 신뢰성 없다
+SQL> --테이블 생성 시 각 컬럼에 들어갈 데이터를 까다롭게 각종 제한을 가하는 db에 조건을 가리켜 제약조건 (constraints)라고 한다.
+SQL> CREATE TABLE MEMBER(
+  2  ID VARCHAR2(20) UNIQUE
+  3  , NAME VARCHAR2(20) NOTNULL
+  4  , GENDER CHAR(2)
+  5  , REGDATE DATE DEFAULT SYSDATE
+  6  , CONSTRAINT CHK_MEMBER CHECK (GENDER='남' OR GENDER='여')
+  7  );
+, NAME VARCHAR2(20) NOTNULL
+                    *
+ERROR at line 3:
+ORA-00907: missing right parenthesis 
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  CREATE TABLE MEMBER(
+  2  ID VARCHAR2(20) UNIQUE
+  3  , NAME VARCHAR2(20) NOT NULL
+  4  , GENDER CHAR(2)
+  5  , REGDATE DATE DEFAULT SYSDATE
+  6  , CONSTRAINT CHK_MEMBER CHECK (GENDER='남' OR GENDER='여')
+  7* )
+SQL> 
+SQL> ED
+Wrote file afiedt.buf
+
+  1  CREATE TABLE MEMBER(
+  2  ID VARCHAR2(20) UNIQUE
+  3  , NAME VARCHAR2(20) NOT NULL
+  4  , GENDER CHAR(2)
+  5  , REGDATE DATE DEFAULT SYSDATE
+  6  , CONSTRAINT CHK_MEMBER CHECK (GENDER='남' OR GENDER='여')
+  7* )
+SQL> SELECT * FROM MEMBER;
+SELECT * FROM MEMBER
+              *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> CREATE TABLE MEMBER(
+  2  ID VARCHAR2(20) UNIQUE
+  3  , NAME VARCHAR2(20) NOTNULL
+  4  , GENDER CHAR(2)
+  5  ;
+, NAME VARCHAR2(20) NOTNULL
+                    *
+ERROR at line 3:
+ORA-00907: missing right parenthesis 
+
+
+SQL> CREATE TABLE MEMBER(
+  2  ID VARCHAR2(20) UNIQUE
+  3  , NAME VARCHAR2(20) NOT NULL
+  4  , GENDER CHAR(2)
+  5  , REGDATE DATE DEFAULT SYSDATE
+  6  , CONSTRAINT CHK_MEMBER CHECK (GENDER='남' OR GENDER='여')
+  7  );
+
+Table created.
+
+SQL> INSERT INTO MEMBER(ID, NAME, GENDER) VALUES ('BATMAN', '배트맨', '여');
+INSERT INTO MEMBER(ID, NAME, GENDER) VALUES ('BATMAN', '배트맨', '여')
+                                                                    *
+ERROR at line 1:
+ORA-12899: value too large for column "JAVA"."MEMBER"."GENDER" (actual: 3, maximum: 2) 
+
+
+SQL> -- 성별 컬럼을 너무 작게 부여함 원래 용량을 늘려야 하지만 컬럼을 제거 한 다음 추가해보자
+SQL> ALTER TABLE MEMBER
+  2  DROP COLUMN GENDER;
+
+Table altered.
+
+SQL> ALTER TABLE MEMBER
+  2  ADD GENDER VARCHAR(8) CHECK (GENDER='남' OR GENDER='여');
+
+Table altered.
+
+SQL> INSERT INTO MEMBER(ID, NAME, GENDER) VALUES ('BATMAN', '배트맨', '여');
+
+1 row created.
+
+SQL> SELECT * FROM MEMBER;
+
+ID                                       NAME                                     REGDATE  GENDER                                                                                                                                                                                                                                                                                                               
+---------------------------------------- ---------------------------------------- -------- ----------------                                                                                                                                                                                                                                                                                                     
+BATMAN                                   배트맨                                   25/04/29 여                                                                                                                                                                                                                                                                                                                   
+
+SQL> INSERT INTO MEMBER(ID, NAME, GENDER) VALUES ('BATMAN', '배트맨', 'W');
+INSERT INTO MEMBER(ID, NAME, GENDER) VALUES ('BATMAN', '배트맨', 'W')
+*
+ERROR at line 1:
+ORA-02290: check constraint (JAVA.SYS_C007002) violated 
+
+
+SQL> SPPOL OFF
+SP2-0042: unknown command "SPPOL OFF" - rest of line ignored.
+SQL> SPOOL OFF

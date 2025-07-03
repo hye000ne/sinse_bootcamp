@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Venezia 타자 게임</title>
+        <script src="../../lib/common.js"></script>
+        <script src="./js/Word.js"></script>
+        <script src="./js/HP.js"></script>
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+                background-color: #f0f4ff;
+                height: 100vh;
+            }
+
+            #wrapper {
+                width: 90%;
+                max-width: 1200px;
+                height: 700px;
+                margin: 0 auto;
+                background-color: white;
+                border-radius: 16px;
+                overflow: hidden;
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+                position: relative;
+                clear: both;
+            }
+
+            #aside {
+                float: left;
+                width: 260px;
+                height: 100%;
+                background-color: #e0e4f0;
+                padding: 20px;
+                border-right: 1px solid #ccc;
+            }
+
+            #aside input[type='file'] {
+                width: 100%;
+            }
+
+            #aside button {
+                width: 100%;
+                padding: 10px;
+                font-size: 16px;
+                background-color: #3f51b5;
+                color: white;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+                transition: background-color 0.2s;
+                margin-top: 16px;
+            }
+
+            #aside button:hover {
+                background-color: #303f9f;
+            }
+
+            #aside input[type='text'] {
+                width: 100%;
+                padding: 10px;
+                font-size: 16px;
+                border: 1px solid #aaa;
+                border-radius: 8px;
+                margin-top: 16px;
+            }
+
+            #hpBox {
+                position: relative;
+                width: 100%;
+                height: 235px;
+                background-color: #f5f5f5;
+                border-radius: 8px;
+                padding: 10px;
+                margin-top: 16px;
+                overflow: hidden;
+            }
+
+            #content {
+                float: left;
+                width: calc(100% - 260px);
+                height: 100%;
+                background-color: #dde3fa;
+                position: relative;
+                overflow: hidden;
+            }
+
+            #scoreBox {
+                font-size: 18px;
+                font-weight: bold;
+                margin-top: 10px;
+            }
+        </style>
+        <script>
+            let wordMap = new Map(); //파일 데이터 Map
+            let wordArray = []; // Word 인스턴스 배열
+            let hpArray = []; // HP 인스턴스 배열
+
+            let currentLevel = 1; // 현재 레벨
+            let score = 0; // 점수
+            let speed = 10;
+
+            let gameInterval;
+
+            function loadData(e) {
+                let file = e.target.files[0];
+                let reader = new FileReader();
+
+                reader.onload = function (data) {
+                    let jsonString = data.target.result;
+                    let levelData = JSON.parse(jsonString);
+
+                    // Map으로 변환
+                    levelData.levels.forEach(levelObj => {
+                        wordMap.set(levelObj.level, levelObj.words);
+                    });
+
+                    // 시작 버튼 활성화
+                    document.querySelector('button').disabled = false;
+                };
+
+                reader.readAsText(file);
+            }
+
+            function createWords() {
+                const content = document.querySelector('#content');
+                const words = wordMap.get(currentLevel); //현재 레벨 단어 리스트
+
+                wordArray = []; //기존 단어 초기화
+
+                for (let i = 0; i < words.length; i++) {
+                    const x = 50 + i * 80;
+                    const y = getRandomByRange(-150, -50);
+                    wordArray.push(new Word(content, x, y, words[i]));
+                }
+            }
+
+            function deleteWord(word, wordArray) {
+                // DOM에서 제거
+                word.destroy();
+                // 배열에서 제거
+                let idx = wordArray.indexOf(word);
+                if (idx > -1) wordArray.splice(idx, 1);
+            }
+
+            function createHP() {
+                for (let i = 0; i < 3; i++) {
+                    for (let j = 0; j < 3; j++) {
+                        hpArray.push(new HP(document.querySelector('#hpBox'), 80 * j + 5, 80 * i + 5));
+                    }
+                }
+            }
+
+            function deleteHP() {
+                if (hpArray.length > 0) {
+                    const last = hpArray.pop(); // 마지막 요소 꺼내기
+                    last.destroy();
+                }
+
+                if (hpArray.length == 0) {
+                    clearInterval(gameInterval);
+                    alert('게임 오버');
+                }
+            }
+
+            function checkInput(inputVal) {
+                wordArray.forEach(w => {
+                    if (w.text === inputVal) {
+                        deleteWord(w, wordArray);
+                        addScore();
+                    }
+                });
+            }
+
+            function addScore() {
+                score += 100;
+                document.querySelector('#scoreBox').innerText = `점수 : ${score}`;
+            }
+
+            function gameLoop() {
+                wordArray.forEach(w => w.move(speed));
+
+                // 단어가 바닥에 닿으면 제거
+                for (let i = wordArray.length - 1; i >= 0; i--) {
+                    if (wordArray[i].y > 650) {
+                        deleteWord(wordArray[i], wordArray);
+                        deleteHP();
+                    }
+                }
+
+                if (wordArray.length == 0) {
+                    alert(currentLevel + '단계 통과!');
+                    currentLevel++;
+                    speed += 5;
+
+                    if (wordMap.has(currentLevel)) {
+                        createWords();
+                    } else {
+                        clearInterval(gameInterval);
+                        alert('축하합니다! 모든 레벨은 완료했습니다');
+                    }
+                }
+            }
+
+            function init() {
+                //하트 객체 생성
+                createHP();
+                document.querySelector('#scoreBox').innerText = `점수 : 0`;
+
+                // 파일 선택
+                document.querySelector("#aside input[type='file']").addEventListener('change', function (e) {
+                    loadData(e);
+                });
+
+                // 게임 시작/중지 버튼 클릭 시 이벤트
+                document.querySelector('button').addEventListener('click', function () {
+                    if (gameInterval == undefined) {
+                        createWords();
+                        gameInterval = setInterval(gameLoop, 500);
+
+                        this.innerText = '게임 중지';
+                    } else {
+                        clearInterval(gameInterval);
+                        gameInterval = undefined;
+                        this.innerText = '게임 시작';
+                    }
+                });
+
+                // 단어 입력 시 이벤트
+                document.querySelector("#aside input[type='text']").addEventListener('keyup', function (e) {
+                    if (e.key === 'Enter') {
+                        checkInput(this.value);
+                        this.value = ''; //입력창 초기화
+                    }
+                });
+            }
+
+            addEventListener('load', init);
+        </script>
+    </head>
+    <body>
+        <div id="wrapper">
+            <div id="aside">
+                <input type="file" />
+                <button disabled>게임 시작</button>
+                <input type="text" placeholder="단어 입력" />
+                <div id="hpBox"></div>
+                <div id="scoreBox"></div>
+            </div>
+            <div id="content"></div>
+        </div>
+    </body>
+</html>
