@@ -1,1 +1,0 @@
-memberSearchIndex = [{"p":"test","c":"Dog","l":"age"},{"p":"test","c":"Dog","l":"bark()"},{"p":"test","c":"Dog","l":"Dog()","u":"%3Cinit%3E()"},{"p":"test","c":"Dog","l":"intro()"},{"p":"test","c":"Dog","l":"name"}];updateSearchResults();

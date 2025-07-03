@@ -1,1 +1,0 @@
-memberSearchIndex = [{"p":"animal","c":"Bird","l":"age"},{"p":"animal","c":"Bird","l":"Bird()","u":"%3Cinit%3E()"},{"p":"animal","c":"Bird","l":"eat()"},{"p":"animal","c":"Bird","l":"fly()"}];updateSearchResults();
