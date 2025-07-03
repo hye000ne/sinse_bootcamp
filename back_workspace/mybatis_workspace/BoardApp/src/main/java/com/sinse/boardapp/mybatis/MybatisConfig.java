@@ -16,7 +16,6 @@ public class MybatisConfig {
 		String resource = "com/sinse/boardapp/mybatis/mybatis-config.xml"; // 설정 파일
 		try {
 			InputStream inputStream = Resources.getResourceAsStream(resource);// 설정 파일을 스트림으로 로드
-			// 설정 파일을 기반으로 DB 연결 정보, 트랜잭션, 매퍼 설정을 가진 SqlSessionFactory 생성
 			sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream); 
 		} catch (IOException e) {
 			e.printStackTrace();

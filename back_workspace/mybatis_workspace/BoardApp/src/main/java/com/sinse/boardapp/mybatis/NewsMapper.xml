@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="News">
+	<!-- 한건 등록 -->
+	<insert id="insert" parameterType="News">
+		insert into news(title, writer, content) values(#{title}, #{writer}, #{content})
+	</insert>
+	
+	<!-- 모든 레코드 가져오기 -->
+	<select id="selectAll" resultType="News"> <!-- List명시 안해도 됨, 여러건이면 알아서 List만들어 줌 -->
+		select * from news order by news_id desc
+	</select>
+	
+	<!-- 게시물 한건 가져오기 -->
+	<select id="select" parameterType="int" resultType="News">
+		select * from news where news_id=#{news_id}
+	</select>
+</mapper>

@@ -4,6 +4,8 @@
 	<!-- mapper에서 사용할 클래스 별칭 생성 -->
 	<typeAliases>
 		<typeAlias type="com.sinse.boardapp.model.Notice" alias="Notice"/>
+		<typeAlias type="com.sinse.boardapp.model.News" alias="News"/>
+		<typeAlias type="com.sinse.boardapp.model.Comment" alias="Comment"/>
 	</typeAliases>
 	
 	<environments default="development">
@@ -21,5 +23,7 @@
 	<!-- mapper 등록 -->
 	<mappers>
 		<mapper resource="com/sinse/boardapp/mybatis/NoticeMapper.xml" />
+		<mapper resource="com/sinse/boardapp/mybatis/NewsMapper.xml" />
+		<mapper resource="com/sinse/boardapp/mybatis/CommentMapper.xml" />
 	</mappers>
 </configuration>
