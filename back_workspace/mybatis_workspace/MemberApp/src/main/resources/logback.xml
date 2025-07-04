@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 자바 로그 레벨 : trace < debug < info < warn < error < fatal
+	trace : 너무나 많은 사소한 정보까지 출력됨(운영 환경 X)
+	debug : 파라미터 값, 변수 값 출력 (운영 환경 X)
+	info : 프로그램 흐름 체크 ex) 실행부가 어떤 메서드에 도달했고 수행했는지 (운영 환경 X)
+	warn : 경고 상황
+	error : 오류 발생(예외 처리 시)
+ -->
+<configuration>
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender"> <!-- 로그를 어디로 출력할지 지정 : 콘솔 -->
+		<encoder> <!-- 로그 출력 포맷 지정 -->
+			<pattern>[%d{HH:mm:ss}][%level] %logger - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<root level="trace"> <!-- debug 이상만 출력 -->
+		<appender-ref ref="console"/> <!-- 위에서 정의한 콘솔 appender 사용 -->
+	</root>
+</configuration>
