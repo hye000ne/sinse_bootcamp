@@ -13,7 +13,7 @@
 		</encoder>
 	</appender>
 	
-	<root level="trace"> <!-- debug 이상만 출력 -->
+	<root level="debug"> <!-- debug 이상만 출력 -->
 		<appender-ref ref="console"/> <!-- 위에서 정의한 콘솔 appender 사용 -->
 	</root>
 </configuration>
