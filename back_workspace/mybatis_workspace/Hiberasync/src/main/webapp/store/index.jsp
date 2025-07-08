@@ -7,12 +7,12 @@
 	<script type="text/javascript">
 	
 		function getDetail(store_id){
-			console.log(store_id);
 			let xhttp = new XMLHttpRequest();
 			
 			xhttp.open("GET", "/store/detail?store_id="+store_id);
 			xhttp.onload = function(){
 				let json = JSON.parse(this.responseText);
+				$("#storeId2").val(json.store_id);
 				$("#foodTypeSel2").val(json.foodType.food_type_id);
 				$("#storeName2").val(json.store_name);
 				$("#tel2").val(json.tel);
@@ -48,13 +48,13 @@
 			xhttp.send();
 		}
 	
-		function getFoodList() {
+		function getFoodList(taget) {
 			/* Ajax(Asynchronous JavaScript And XML) */
 			let xhttp = new XMLHttpRequest();
 			xhttp.open("GET", "/foodtype/list");
 			xhttp.onload = function() { // 웹 브라우저가 서버로부터 응답을 받았을 경우 이 메서드 호출
 				let foodTypeList = JSON.parse(this.responseText);
-				let tag ="<option value='0'>유형 선택</option>"
+				let tag ="<option value='0'>유형 선택</option>";
 				for(let i=0;i<foodTypeList.length;i++) {
 					tag += "<option value='"+foodTypeList[i].food_type_id+"'>"+foodTypeList[i].title+"</option>"
 				}
@@ -84,13 +84,52 @@
 			//전송 파라미터 만들기
 			 //요청 -> 비동기 시작
 		}
-	
+		
+		function update() {
+			let xhttp = new XMLHttpRequest();
+			xhttp.open("POST", "/store/update");
+			xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			xhttp.onload = function() {
+				if(this.status == 201) { 
+					getStoreList();
+				} else {
+					let json = JSON.parse(this.responseText); //서버가 보내온 응답 문자열
+					alert(json.msg);
+				}
+			}
+			
+			xhttp.send("storeId="+$("#storeId2").val()+"&foodTypeSel="+$("#foodTypeSel2").val()+"&storeName="+$("#storeName2").val()+"&tel="+$("#tel2").val());
+		}
+		
+		function deletes() {
+			let xhttp = new XMLHttpRequest();
+			xhttp.open("POST", "/store/delete");
+			xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			xhttp.onload = function() {
+				if(this.status == 201) { 
+					getStoreList();
+				} else {
+					let json = JSON.parse(this.responseText); //서버가 보내온 응답 문자열
+					alert(json.msg);
+				}
+			}
+			
+			xhttp.send("storeId="+$("#storeId2").val());
+		}
+		
 		$(()=>{
 			getStoreList();
 			getFoodList();
 			$("#registBtn").click(()=>{
 				regist();
 			});	
+			$("#updBtn").click(()=>{
+				if(confirm("정말 수정하시겠어요?")) update();
+			});	
+			$("#delBtn").click(()=>{
+				if(confirm("정말 삭제하시겠어요?")) deletes();
+			});	
+			
 		});
 	
 	</script>
@@ -164,10 +203,11 @@
 		</div>
 		<div id="aside_detail">
 			<select id="foodTypeSel2" name="foodTypeSel"></select>
+			<input type="hidden" id="storeId2">
 			<input type="text" id="storeName2" placeholder="맛집 상호명">
 			<input type="text" id="tel2" placeholder="연락처">
-			<button>수정</button>
-			<button>삭제</button>
+			<button type="button" id="updBtn">수정</button>
+			<button type="button" id="delBtn">삭제</button>
 		</div>
 	</div>
 		

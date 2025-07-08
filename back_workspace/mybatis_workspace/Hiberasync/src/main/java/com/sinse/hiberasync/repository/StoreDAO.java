@@ -60,4 +60,32 @@ public class StoreDAO {
 		
 		return store;
 	}
+	
+	public void update(Store store) throws StoreException {
+		Transaction tx = null;
+		try (Session session = config.getSession()) {
+			tx = session.beginTransaction();
+			session.update(store);
+			tx.commit();
+		}catch(Exception e) {
+			e.printStackTrace();
+			if(tx != null) tx.rollback();
+			throw new StoreException("수정 실패", e);
+		}
+	}
+	
+	public void delete(int storeId) throws StoreException {
+		Transaction tx = null;
+		Store store = null;
+		try (Session session = config.getSession()) {
+			tx = session.beginTransaction();
+			store = session.get(Store.class, storeId);
+			session.delete(store);
+			tx.commit();
+		}catch(Exception e) {
+			e.printStackTrace();
+			if(tx != null) tx.rollback();
+			throw new StoreException("삭제 실패", e);
+		}
+	}
 }

@@ -18,40 +18,39 @@ import com.sinse.hiberasync.model.Store;
 import com.sinse.hiberasync.repository.StoreDAO;
 import com.sinse.hiberasync.util.Message;
 
-public class StoreRegist extends HttpServlet {
+public class StoreUpdate extends HttpServlet {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	StoreDAO storeDAO = new StoreDAO();
-	@Override
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//필터가 제대로 동작한다면, 따로 인코딩 작업 안해줘도 됨
-		String foodTypeSel = request.getParameter("foodTypeSel"); // select 유형 value 값
+		String storeId = request.getParameter("storeId");
+		String foodTypeId = request.getParameter("foodTypeSel");
 		String storeName = request.getParameter("storeName");
 		String tel = request.getParameter("tel");
 		
-		logger.debug("foodTypeSel : " + foodTypeSel);
-		logger.debug("storeName : " + storeName);
-		logger.debug("tel : " + tel);
+		logger.debug("storeId: " + storeId);
+		logger.debug("foodTypeId: " + foodTypeId);
+		logger.debug("storeName: " + storeName);
+		logger.debug("tel: " + tel);
 		
 		Store store = new Store();
 		FoodType foodType = new FoodType();
-		foodType.setFood_type_id(Integer.parseInt(foodTypeSel));
-		
+		foodType.setFood_type_id(Integer.parseInt(foodTypeId));
+
+		store.setStore_id(Integer.parseInt(storeId));
 		store.setStore_name(storeName);
 		store.setTel(tel);
-		store.setFoodType(foodType);//부모 객체 주입
-
-		// 응답 정보를 html이 아닌 json으로 생성하여 보내자
+		store.setFoodType(foodType);
+		
 		response.setContentType("application/json;charset=UTF-8");
 		PrintWriter out = response.getWriter();
-		Message message = new Message(); 
+		Message message = new Message();
 		Gson gson = new Gson();
-		// 등록
+		
 		try {
-			storeDAO.insert(store);
-			// 200, 500 HTTP Status 코드: 서버가 클라이언트에게 응답 시 보내는 코드 (성공/실패)
-			// IETF(Internet Engineering Task Force) - 인터넷 표준 프로토콜을 정의하는 국제 조직이 정함
+			storeDAO.update(store);
 			message.setResult("success");
-			message.setMsg("등록 성공");
+			message.setMsg("수정 성공");
 			response.setStatus(HttpServletResponse.SC_CREATED); // 201
 		} catch (StoreException e) {
 			e.printStackTrace();

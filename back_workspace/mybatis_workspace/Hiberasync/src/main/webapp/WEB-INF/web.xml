@@ -49,5 +49,33 @@
   	<servlet-name>StoreDetail</servlet-name>
   	<url-pattern>/store/detail</url-pattern>
   </servlet-mapping>
+  <servlet>
+  	<servlet-name>StoreUpdate</servlet-name>
+  	<servlet-class>com.sinse.hiberasync.servlet.StoreUpdate</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>StoreUpdate</servlet-name>
+  	<url-pattern>/store/update</url-pattern>
+  </servlet-mapping>
+  <servlet>
+  	<servlet-name>StoreDelete</servlet-name>
+  	<servlet-class>com.sinse.hiberasync.servlet.StoreDelete</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>StoreDelete</servlet-name>
+  	<url-pattern>/store/delete</url-pattern>
+  </servlet-mapping>
+  <servlet>
+  	<servlet-name>UploadServlet</servlet-name>
+  	<servlet-class>com.sinse.hiberasync.servlet.UploadServlet</servlet-class>
+  	<init-param>
+  		<param-name>uploadPath</param-name>
+  		<param-value>/data</param-value>
+  	</init-param>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>UploadServlet</servlet-name>
+  	<url-pattern>/upload/regist</url-pattern>
+  </servlet-mapping>
   
 </web-app>
