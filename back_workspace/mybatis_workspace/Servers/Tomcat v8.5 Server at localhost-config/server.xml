@@ -165,7 +165,7 @@
 
       
       
-      <Context docBase="MvcApp" path="/" reloadable="true" source="org.eclipse.jst.jee.server:MvcApp"/></Host>
+      <Context docBase="mvcproject" path="/" reloadable="true" source="org.eclipse.jst.jee.server:mvcproject"/></Host>
     </Engine>
   </Service>
 </Server>
