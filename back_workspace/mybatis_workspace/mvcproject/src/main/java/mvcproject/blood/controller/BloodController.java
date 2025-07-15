@@ -29,6 +29,11 @@ public class BloodController implements Controller{
 		request.setAttribute("msg", result);
 		
 	}
+
+	@Override
+	public boolean isForward() {
+		return false;
+	}
 	
 	public String getViewName() {
 		return "/blood/view";
