@@ -87,7 +87,7 @@
 						        	</select>
 						      	</div>
 			                  	<div class="form-group">
-						      		<textarea id="summernote"></textarea>
+						      		<textarea id="summernote" name="detail"></textarea>
 			                  	</div>
 					           	<div class="form-group">
 					             	<div class="input-group">
@@ -106,7 +106,7 @@
 								</div>
 							</div>
 							<div class="card-footer">
-							  	<button type="submit" class="btn btn-primary">Submit</button>
+							  	<button type="button" class="btn btn-primary">Submit</button>
 							</div>
 	       				</form>
 	     			</div>
