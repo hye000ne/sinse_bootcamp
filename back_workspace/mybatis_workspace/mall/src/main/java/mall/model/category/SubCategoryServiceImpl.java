@@ -19,7 +19,7 @@ public class SubCategoryServiceImpl implements SubCategoryService{
 	}
 
 	@Override
-	public SubCategory select(int subcategory_id) {
-		return null;
+	public List selectByTopCategoryId(int topcategory_id) {
+		return subCategoryDAO.selectByTopCategoryId(topcategory_id);
 	}
 }

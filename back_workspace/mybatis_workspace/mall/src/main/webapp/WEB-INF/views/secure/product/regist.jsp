@@ -1,11 +1,4 @@
-<%@page import="mall.domain.SubCategory"%>
-<%@page import="mall.domain.TopCategory"%>
-<%@page import="java.util.List"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
-<%
-	List<TopCategory> topList = (List<TopCategory>)request.getAttribute("topList");
-	List<SubCategory> subList = (List<SubCategory>)request.getAttribute("subList");
-%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,15 +23,15 @@
 	    			<div class="row mb-2">
 	      				<div class="col-sm-6">
 	       					<h1 class="m-0">상품 등록</h1>
-	      				</div><!-- /.col -->
+	      				</div>
 						<div class="col-sm-6">
 							<ol class="breadcrumb float-sm-right">
 							  	<li class="breadcrumb-item"><a href="#">Home</a></li>
 							  	<li class="breadcrumb-item active">상품관리>상품등록</li>
 							</ol>
-						</div><!-- /.col -->
-					</div><!-- /.row -->
-				</div><!-- /.container-fluid -->
+						</div>
+					</div>
+				</div>
 			</div>
 	
 			<section class="content">
@@ -53,22 +46,16 @@
 	               					<div class="col-sm-6">
 							           	<div class="form-group">
 							             	<label>상위 카테고리</label>
-							             	<select class="form-control">
+							             	<select class="form-control" id="topcategory">
 							               		<option value="0">상위 카테고리 선택</option>
-							               		<% for(TopCategory topCategory : topList) { %>
-								               		<option value="<%= topCategory.getTopcategory_id()%>"><%= topCategory.getTopcategory_name() %></option>
-							               		<% } %>
 						            		</select>
 							          	</div>
 					         		</div>
 						         	<div class="col-sm-6">
 							           	<div class="form-group">
 							             	<label>하위 카테고리</label>
-						             		<select class="form-control">
+						             		<select class="form-control" id="subcategory">
 							               		<option value="0">하위 카테고리 선택</option>
-							               		<% for(SubCategory subCategory : subList) { %>
-								               		<option value="<%= subCategory.getSubcategory_id()%>"><%= subCategory.getSubcategory_name() %></option>
-							               		<% } %>
 							             	</select>
 							           	</div>
 						         	</div>
@@ -99,38 +86,10 @@
 						          		<option>사이즈 선택</option>
 						        	</select>
 						      	</div>
-						      	<div class="row">
-									<div class="col-md-12">
-						  				<div class="card card-outline card-info">
-						    				<div class="card-header">
-						      					<h3 class="card-title">
-						        					CodeMirror
-						      					</h3>
-						    				</div>
-									        <div class="card-body p-0">
-												<textarea id="codeMirrorDemo" class="p-3">
-													<div class="info-box bg-gradient-info">
-											  			<span class="info-box-icon"><i class="far fa-bookmark"></i></span>
-											  			<div class="info-box-content">
-														    <span class="info-box-text">Bookmarks</span>
-														    <span class="info-box-number">41,410</span>
-														    <div class="progress">
-														      	<div class="progress-bar" style="width: 70%"></div>
-														    </div>
-														    <span class="progress-description">
-														      70% Increase in 30 Days
-														    </span>
-													  	</div>
-													</div>
-												</textarea>
-	    		 							</div>
-									     	<div class="card-footer">
-										       	Visit <a href="https://codemirror.net/">CodeMirror</a> documentation for more examples and information about the plugin.
-									     	</div>
-										</div>
-									</div>
-								</div>
-					           <div class="form-group">
+			                  	<div class="form-group">
+						      		<textarea id="summernote"></textarea>
+			                  	</div>
+					           	<div class="form-group">
 					             	<div class="input-group">
 					               		<div class="custom-file">
 					                 		<input type="file" class="custom-file-input" id="exampleInputFile">
@@ -158,24 +117,47 @@
 		<%//@ include file="../inc/right_bar.jsp" %>
 	</div>
 <%@ include file="../inc/footer_link.jsp" %>
-<!-- Summernote -->
-<script src="/static/admin/plugins/summernote/summernote-bs4.min.js"></script>
-<!-- CodeMirror -->
-<script src="/static/admin/plugins/codemirror/codemirror.js"></script>
-<script src="/static/admin/plugins/codemirror/mode/css/css.js"></script>
-<script src="/static/admin/plugins/codemirror/mode/xml/xml.js"></script>
-<script src="/static/admin/plugins/codemirror/mode/htmlmixed/htmlmixed.js"></script>
 <script>
-  $(function () {
-    // Summernote
-    $('#summernote').summernote()
-
-    // CodeMirror
-    CodeMirror.fromTextArea(document.getElementById("codeMirrorDemo"), {
-      mode: "htmlmixed",
-      theme: "monokai"
-    });
-  })
+	function getTopCategory() {
+		$.ajax({
+			url: "/admin/admin/topcategory/list",
+			type: "get",
+			success : function(result){
+				var str="<option value='0'>상위 카테고리 선택</option>";
+				for (let i=0;i<result.length;i++) {
+					str += "<option value='"+result[i].topcategory_id+"'>"+result[i].topcategory_name+"</option>"
+				}
+				$("#topcategory").html(str);
+			}
+		});
+	}
+	
+	function getSubCategory(topcategory_id) {
+		$.ajax({
+			url: "/admin/admin/subcategory/list?topcategory_id="+topcategory_id,
+			type: "get",
+			success : function(result){
+				var str="<option value='0'>하위 카테고리 선택</option>";
+				for (let i=0;i<result.length;i++) {
+					str += "<option value='"+result[i].subcategory_id+"'>"+result[i].subcategory_name+"</option>"
+				}
+				$("#subcategory").html(str);
+			}
+		});
+	}
+	
+  	$(()=>{
+    	$('#summernote').summernote({
+			height:200,
+			placeholder:"상품 상세 설명"
+		});
+    	
+    	getTopCategory();
+    	
+    	$("#topcategory").change(function(){
+    		getSubCategory($(this).val());
+    	});
+	});
 </script>
 </body>
 </html>

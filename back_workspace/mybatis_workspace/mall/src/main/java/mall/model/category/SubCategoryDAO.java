@@ -6,5 +6,5 @@ import mall.domain.SubCategory;
 
 public interface SubCategoryDAO {
 	public List selectAll();
-	public SubCategory select(int subcategory_id);
+	public List selectByTopCategoryId(int topcategory_id);
 }

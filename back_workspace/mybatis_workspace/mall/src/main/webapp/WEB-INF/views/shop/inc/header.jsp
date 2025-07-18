@@ -1,4 +1,9 @@
+<%@page import="mall.domain.TopCategory"%>
+<%@page import="java.util.List"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%
+	List<TopCategory> topList = (List<TopCategory>)request.getAttribute("topList");
+%>
     <header class="header">
         <div class="container-fluid">
             <div class="row">
@@ -12,7 +17,7 @@
                         <ul>
                             <li class="active"><a href="/static/shop/index.html">Home</a></li>
                             <%for(TopCategory topcategory : topList){ %>
-                            <li><a href="#"><%=topcategory.getTop_name() %></a></li>
+                            <li><a href="#"><%=topcategory.getTopcategory_name() %></a></li>
                             <%}%>
                             <li><a href="/static/shop/shop.html">Shop</a></li>
                             <li><a href="#">Pages</a>
